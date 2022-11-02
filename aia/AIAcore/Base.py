@@ -56,7 +56,7 @@ class Base:
         return {
             'GID': self.global_id,
 
-            # version optinal
+            # version optional
             **({'version': self.version}
                 if self.version is not None
                 else {})
