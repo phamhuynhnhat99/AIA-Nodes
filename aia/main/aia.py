@@ -27,15 +27,29 @@ def run():
 
 
 
-    read_array_ = auto_nodes[1]()
+    read_array_ = auto_nodes[2]()
     read_array_.read_arr()
     
-    show_array_ = auto_nodes[2]()
+    show_array_ = auto_nodes[3]()
     show_array_.set_prev(read_array_)
-    print(show_array_.get_arr())
+    show_array_.show_arr()
+
+    selection_sort_ = auto_nodes[0]()
+    selection_sort_.set_prev(show_array_)
+    selection_sort_.update_event()
+
+    merge_sort_ = auto_nodes[1]()
+    merge_sort_.set_prev(show_array_)
+    merge_sort_.update_event()
+
+    print("Sap xep giam dan")
+    print(selection_sort_.get_data_outputs())
+
+    print("Sap xep tang dan")
+    print(merge_sort_.get_data_outputs())
+
+    print("Mang ban dau")
     print(show_array_.get_data_outputs())
-
-
 
     print("__________")
     print("Good luck Have fun.")

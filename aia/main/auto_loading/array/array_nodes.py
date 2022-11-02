@@ -10,9 +10,6 @@ class ArrayNodeBase(Node):
     def set_arr(self, new_arr):
         self.arr = new_arr
 
-    def show_arr(self):
-        print(self.arr)
-
     def update_event(self):
         self.arr = self.get_arr()
         self.set_data_outputs(type=0, obj=self.arr)
@@ -53,13 +50,23 @@ class ShowArray(ArrayNodeBase):
             self.set_data_inputs(type=0, obj=data)
         
 
-    def get_arr(self):
+    def show_arr(self):
         inputs = self.get_data_inputs()
         if len(inputs) >= 1:
-            obj = inputs[:1]
-            self.set_data_outputs(type=-1, obj=obj)
-            return obj[0]
-        return None
+            self.arr = inputs[0]
+            print("Show Array")
+            print(self.arr)
+            if len(self.data_outputs) == 0:
+                self.push_data_outputs(self.arr)
+            else:
+                self.set_data_outputs(type=0, obj=self.arr)
+        else:
+            print("Empty Array")
+            self.set_data_outputs(type=-1, obj=list())
+        
+
+    def get_arr(self):
+        return self.arr
 
 
 export_nodes = [
