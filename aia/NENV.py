@@ -1,5 +1,5 @@
 import os
-from aia.AIAcore.Node import Node as Node_
+from aia.core.Node import Node as Node_
 
 
 Node = None
@@ -13,6 +13,7 @@ def init_node_env():
         pass
 
     else:
-
+        print("Good way")
+        print("----------")
         Node = Node_
 
