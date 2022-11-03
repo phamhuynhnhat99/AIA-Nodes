@@ -13,7 +13,6 @@ def init_node_env():
         pass
 
     else:
-        print("Good way")
-        print("----------")
+        
         Node = Node_
 
