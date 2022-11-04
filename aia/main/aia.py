@@ -43,7 +43,7 @@ def run():
         print("----------------------------------------")
         print("-oOo-            Arrows            -oOo-")
         for arrow in arrows:
-            print("       ", arrow[0], '---->', arrow[1])
+            print("               ", arrow[0], '---->', arrow[1])
         print("----------------------------------------")
         print("<3 Welcome to my world <3")
         print("0: Exit")
@@ -69,7 +69,10 @@ def run():
             break
 
     flow.constructor(vertices=vertices, arrows=arrows)
-    print(flow.toposort())
+    print("Toposort")
+    order, end_vertices = flow.toposort()
+    print(order)
+    print(end_vertices)
 
     # read_array_ = auto_nodes[2]()
     # read_array_.read_arr()

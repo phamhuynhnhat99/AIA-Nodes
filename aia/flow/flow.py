@@ -7,7 +7,10 @@ class Flow:
 
     def constructor(self, vertices, arrows):
         self.vertices = vertices
-        self.n = max(self.vertices)
+        if self.vertices:
+            self.n = max(self.vertices)
+        else:
+            self.n = 0
         self.arrows = arrows
         self.m = len(self.arrows)
     
@@ -15,23 +18,28 @@ class Flow:
     def toposort(self):
 
         if not self.vertices or not self.arrows:
-            return list()
+            return list(), []
         
-        scv = [0] * (self.n+1)
+        num_prev = [0] * (self.n+1)
+        num_next = [0] * (self.n+1)
+
         head = [-1] * (self.n+1)
         before = [None] * self.m
         adj = [None] * self.m
 
         for i, ar in enumerate(self.arrows):
             u, v = ar[0], ar[1]
-            scv[v] += 1
+            num_next[u] += 1
+            num_prev[v] += 1
             adj[i] = v
             before[i] = head[u]
             head[u] = i
+
+        end_vertices = [u for u in self.vertices if num_next[u] == 0]
         
         topo_queue = []
         for ver in self.vertices:
-            if scv[ver] == 0:
+            if num_prev[ver] == 0:
                 topo_queue.append(ver)
         
         toposort = []
@@ -45,13 +53,13 @@ class Flow:
                 pos = head[u]
                 while pos != -1:
                     v = adj[pos]
-                    scv[v] -= 1
-                    if scv[v] == 0:
+                    num_prev[v] -= 1
+                    if num_prev[v] == 0:
                         topo_queue.append(v)
                     pos = before[pos]
                 b_ind += 1
             else:
                 break
         
-        return toposort
+        return toposort, end_vertices
         
