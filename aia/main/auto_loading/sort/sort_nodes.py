@@ -7,35 +7,25 @@ class SortAlgNodeBase(Node):
         super().__init__()
         self.res = list()
 
-    def set_prev(self, node):
-        if len(self.prev_nodes) == 0:
-            self.push_prev_nodes(node)
-        else:
-            self.set_prev_nodes(type=0, obj=node)
-
-        data = node.get_data_outputs(type = 0).copy()
-        if len(self.data_inputs) == 0:
-            self.push_data_inputs(data)
-        else:
-            self.set_data_inputs(type=0, obj=data)
-
     def update_event(self):
         self.res = self.sort()
-        if len(self.data_outputs) == 0:
-            self.push_data_outputs(self.res)
-        else:
-            self.set_data_outputs(type=0, obj=self.res)
+        self.set_data_output(key="unique", obj=self.res)
 
 
 class SelectionSort(SortAlgNodeBase):
     title = "Seletion Sort"
 
     def sort(self):
-        arr = self.get_data_inputs(0)
-        for i in range(0, len(arr)-1):
-            for j in range(i+1, len(arr)):
-                if arr[i] < arr[j]:
-                    arr[i], arr[j] = arr[j], arr[i]
+
+        def selection_sort(a, l, r):
+            for i in range(l, r):
+                for j in range(i+1, r+1):
+                    if a[i] < a[j]:
+                        a[i], a[j] = a[j], a[i]
+
+        arr = self.get_data_inputs(0)["unique"]
+        if arr:
+            selection_sort(arr, 0, len(arr)-1)
         return arr
 
 
@@ -65,8 +55,9 @@ class MergeSort(SortAlgNodeBase):
                     a[l+i] = b[ir-l]
                     ir += 1
 
-        arr = self.get_data_inputs(0)
-        merge_sort(arr, 0, len(arr)-1)
+        arr = self.get_data_inputs(0)["unique"]
+        if arr:
+            merge_sort(arr, 0, len(arr)-1)
         return arr
 
 

@@ -23,9 +23,8 @@ def run():
         auto_nodes += __import__(os.path.basename(nodes_py)[:-3]).export_nodes
     
     flow = Flow()
-    vertices = []
     arrows = []
-    registered_nodes = []
+    registered_nodes = dict()
 
     while True:
         os.system('clear')
@@ -34,18 +33,14 @@ def run():
             print(i, node.title)
         print("----------------------------------------")
         print("-oOo-       Registered Nodes       -oOo-")
-        for r_node in registered_nodes:
-            print("       id:", r_node.global_id, "and title:", r_node.title)
-        print("----------------------------------------")
-        print("-oOo-           Vertices           -oOo-")
-        if vertices:
-            print(vertices)
+        for gid, node in registered_nodes.items():
+            print("       id:", gid, "and title:", node.title)
         print("----------------------------------------")
         print("-oOo-            Arrows            -oOo-")
         for arrow in arrows:
-            print("               ", arrow[0], '---->', arrow[1])
+            print("              ", arrow[0], '---->', arrow[1])
         print("----------------------------------------")
-        print("<3 Welcome to my world <3")
+        print("❤️  Welcome to my world ❤️")
         print("0: Exit")
         print("1: Registering a new node")
         print("2: Registering a direction")
@@ -56,49 +51,37 @@ def run():
             if 0 <= ind and ind < len(auto_nodes):
                 new_node = auto_nodes[ind]()
                 new_node.title = auto_nodes[ind].title
-                registered_nodes.append(new_node)
-                vertices.append(new_node.global_id)
+                registered_nodes[new_node.global_id] = new_node
 
         elif choice == "2":
             arrow = input("Enter an arrow: ").split(" ")
             u = int(arrow[0])
             v = int(arrow[1])
-            if u in vertices and v in vertices:
+            if u in registered_nodes.keys() and v in registered_nodes.keys():
                 arrows.append([u, v])
+                registered_nodes[u].push_prev_nodes(registered_nodes[v])
         else:
             break
 
-    flow.constructor(vertices=vertices, arrows=arrows)
-    print("Toposort")
+    flow.constructor(vertices=list(registered_nodes.keys()), arrows=arrows)
     order, end_vertices = flow.toposort()
-    print(order)
-    print(end_vertices)
 
-    # read_array_ = auto_nodes[2]()
-    # read_array_.read_arr()
-    
-    # show_array_ = auto_nodes[3]()
-    # show_array_.set_prev(read_array_)
-    # show_array_.show_arr()
-
-    # selection_sort_ = auto_nodes[0]()
-    # selection_sort_.set_prev(show_array_)
-    # selection_sort_.update_event()
-
-    # merge_sort_ = auto_nodes[1]()
-    # merge_sort_.set_prev(show_array_)
-    # merge_sort_.update_event()
-
-    # print("Sap xep giam dan")
-    # print(selection_sort_.get_data_outputs())
-
-    # print("Sap xep tang dan")
-    # print(merge_sort_.get_data_outputs())
-
-    # print("Mang ban dau")
-    # print(show_array_.get_data_outputs())
-
-    # print(merge_sort_.global_id)
+    if order:
+        print("Toposort")
+        print(order)
+        print("----------------------------------------")
+        for ver in order:
+            if not ver in end_vertices:
+                registered_nodes[ver].update_event()
+        
+        print("All of End Vertices")
+        print(end_vertices)
+        print("----------------------------------------")
+        for ver in end_vertices:
+            registered_nodes[ver].update_event()
+            
+    else:
+        print("This is not a DAG, dude")
 
     print("__________")
     print("Good luck Have fun.")

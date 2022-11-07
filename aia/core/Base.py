@@ -6,15 +6,9 @@ class IDCtr:
     def __init__(self):
         self.ctr = -1
 
-    def count(self):
+    def increasing(self):
         self.ctr += 1
         return self.ctr
-
-    def set_count(self, cnt):
-        if cnt < self.ctr:
-            raise Exception("Decreasing ID counters is illegal")
-        else:
-            self.ctr = cnt
 
 
 class Base:
@@ -24,12 +18,11 @@ class Base:
     """
 
     _global_id_ctr = IDCtr()
-    _prev_id_objs = {}
+    _global_objs = {}
 
     @classmethod
-    def obj_from_prev_id(cls, prev_id: int):
-        """ returns the object with the given previous id """
-        return cls._prev_id_objs.get(prev_id)
+    def obj_from_global_id(cls, id: int):
+        return cls._global_objs.get(id)
 
     complete_data_function = lambda data: data
 
@@ -43,7 +36,8 @@ class Base:
     # non-static
 
     def __init__(self):
-        self.global_id = self._global_id_ctr.count()
+        self.global_id = self._global_id_ctr.increasing()
+        self._global_objs[self.global_id] = self
 
         self.prev_global_id = None
         self.prev_version = None
@@ -63,10 +57,7 @@ class Base:
         }
 
     def load(self, data: dict):
-        """
-        Recreate the object state from the data dict returned by :code:`data()`.
-        """
         if dict is not None:
             self.prev_global_id = data['GID']
-            self._prev_id_objs[self.prev_global_id] = self
+            self._global_objs[self.prev_global_id] = self
             self.prev_version = data.get('version')

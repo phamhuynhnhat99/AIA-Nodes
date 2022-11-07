@@ -7,27 +7,22 @@ class ArrayNodeBase(Node):
         super().__init__()
         self.arr = list()
 
-    def set_arr(self, new_arr):
-        self.arr = new_arr
-
     def update_event(self):
         self.arr = self.get_arr()
-        if self.arr:
-            if len(self.data_outputs) == 0:
-                self.push_data_outputs(self.arr)
-            else:
-                self.set_data_outputs(type=0, obj=self.arr)
-        else:
-            self.set_data_outputs(type=-1, obj=list())
+        self.set_data_output(key="unique", obj=self.arr)
 
 
 class ReadArray(ArrayNodeBase):
     title = "Read Array"
     
     def get_arr(self):
-        self.push_prev_nodes(None)
-        self.push_data_inputs("/home/aia/Nhat/AIA-Nodes/aia/main/auto_loading/array/arr.txt")
-        arr_path = self.get_data_inputs(type=0)
+        if len(self.prev_nodes) == 0:
+            self.push_prev_nodes(None)
+        else:
+            self.set_prev_nodes(ind=0, obj=None)
+        self.set_fake_input(["/home/aia/Nhat/AIA-Nodes/aia/main/auto_loading/array/arr.txt"])
+        
+        arr_path = self.get_fake_input()[0]
         with open(arr_path, "r") as fi:
             content = fi.read().split(" ")
             arr = [float(_) for _ in content]
@@ -39,27 +34,16 @@ class ReadArray(ArrayNodeBase):
 class ShowArray(ArrayNodeBase):
     title = "Show Array"
 
-    def set_prev(self, node):
-        if len(self.prev_nodes) == 0:
-            self.push_prev_nodes(node)
-        else:
-            self.set_prev_nodes(type=0, obj=node)
-
-        data = node.get_data_outputs(type = 0)
-        if len(self.data_inputs) == 0:
-            self.push_data_inputs(data)
-        else:
-            self.set_data_inputs(type=0, obj=data)
-
     def get_arr(self):
-        inputs = self.get_data_inputs()
-        if len(inputs) >= 1:
-            self.arr = inputs[0]
+
+        input = self.get_data_inputs(ind=0)
+        if input:
+            arr = input["unique"]
             print("Show Array")
-            print(self.arr)
+            print(arr)
         else:
-            self.arr = list()
-        return self.arr
+            arr = list()
+        return arr
 
 
 export_nodes = [

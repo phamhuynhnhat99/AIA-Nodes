@@ -6,12 +6,15 @@ class Flow:
 
 
     def constructor(self, vertices, arrows):
-        self.vertices = vertices
-        if self.vertices:
-            self.n = max(self.vertices)
-        else:
-            self.n = 0
-        self.arrows = arrows
+
+        self.decode_vertices = vertices
+        self.vertices = [_ for _ in range(len(vertices))]
+        
+        self.arrows = []
+        for arrow in arrows:
+            u = vertices.index(arrow[0])
+            v = vertices.index(arrow[1])
+            self.arrows.append([u, v])
         self.m = len(self.arrows)
     
 
@@ -20,10 +23,10 @@ class Flow:
         if not self.vertices or not self.arrows:
             return list(), []
         
-        num_prev = [0] * (self.n+1)
-        num_next = [0] * (self.n+1)
+        num_prev = [0] * len(self.vertices)
+        num_next = [0] * len(self.vertices)
 
-        head = [-1] * (self.n+1)
+        head = [-1] * len(self.vertices)
         before = [None] * self.m
         adj = [None] * self.m
 
@@ -61,5 +64,12 @@ class Flow:
             else:
                 break
         
-        return toposort, end_vertices
+        if e_ind < len(self.vertices):
+            toposort = list()
+            end_vertices = list()
+
+        # decode
+        decode_toposort = [self.decode_vertices[_] for _ in toposort]
+        decode_end_vertices = [self.decode_vertices[_] for _ in end_vertices]
+        return decode_toposort, decode_end_vertices
         

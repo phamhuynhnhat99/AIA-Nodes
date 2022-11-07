@@ -4,65 +4,80 @@ from .Base import Base
 class Node(Base):
 
     def __init__(self):
+        
         super().__init__()
 
         self.title = ''
+
         self.version: str = None
 
         self.data_inputs = list()
-        self.data_outputs = list()
+        self.fake_inputs = list()
+
+        self.data_output = dict()
+
         self.prev_nodes = list()
 
+
     # data_inputs
-    def get_data_inputs(self, type = -1):
-        if type == -1:
+    def update_data_inputs(self):
+        def copy_object(obj):
+            if str(type(obj)) == "<class 'list'>":
+                return obj.copy()
+            else:
+                return obj
+
+        self.data_inputs = list()
+        for node in self.prev_nodes:
+            copy_obj = copy_object(node.get_data_output("all"))
+            self.data_inputs.append(copy_obj)
+
+    def get_data_inputs(self, ind = -1):
+        self.update_data_inputs()
+        if ind == -1:
             return self.data_inputs
-        elif type < len(self.data_inputs):
-            return self.data_inputs[type]
+        elif ind < len(self.data_inputs):
+            return self.data_inputs[ind]
         return None
 
-    def push_data_inputs(self, obj):
-        self.data_inputs.append(obj)
+    def set_fake_input(self, fake):
+        self.fake_inputs = fake
 
-    def set_data_inputs(self, type, obj):
-        if type == -1:
-            self.data_outputs = obj
-        elif type < len(self.data_outputs):
-            self.data_outputs[type] = obj
+    def get_fake_input(self):
+        return self.fake_inputs
 
-    # data_outputs
-    def get_data_outputs(self, type = -1):
-        if type == -1:
-            return self.data_outputs
-        elif type < len(self.data_outputs):
-            return self.data_outputs[type]
+
+    # data_output
+    def get_data_output(self, key = "all"):
+        if key == "all":
+            return self.data_output
+        elif key in self.data_output.keys():
+            return self.data_output[key]
         return None
 
-    def push_data_outputs(self, obj):
-        self.data_outputs.append(obj)
+    def set_data_output(self, key, obj):
+        self.data_output[key] = obj
 
-    def set_data_outputs(self, type, obj):
-        if type == -1:
-            self.data_outputs = obj
-        elif type < len(self.data_outputs):
-            self.data_outputs[type] = obj
     
     # prev_nodes
-    def get_prev_nodes(self, type = -1):
-        if type == -1: # get all
+    def get_prev_nodes(self, ind = -1):
+        if ind == -1: # get all
             return self.prev_nodes
-        elif type < len(self.prev_nodes):
-            return self.prev_nodes[type]
+        elif ind < len(self.prev_nodes):
+            return self.prev_nodes[ind]
         return None
     
     def push_prev_nodes(self, prev_node):
         self.prev_nodes.append(prev_node)
     
-    def set_prev_nodes(self, type, obj):
-        if type == -1:
-            self.prev_nodes = obj
-        elif type < len(self.prev_nodes):
-            self.prev_nodes[type] = obj
+    def set_prev_nodes(self, ind, obj):
+        if ind == -1:
+            if str(type(obj)) == "<class 'list'>":
+                self.prev_nodes = obj
+            else:
+                self.prev_nodes = list()
+        elif ind < len(self.prev_nodes):
+            self.prev_nodes[ind] = obj
 
 
     """ RESET """
@@ -71,5 +86,7 @@ class Node(Base):
         self.version: str = None
 
         self.data_inputs = list()
-        self.data_outputs = list()
+
+        self.data_output = dict()
+
         self.prev_nodes = list()  # list of input nodes
