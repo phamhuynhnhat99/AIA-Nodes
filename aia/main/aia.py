@@ -59,7 +59,7 @@ def run():
             v = int(arrow[1])
             if u in registered_nodes.keys() and v in registered_nodes.keys():
                 arrows.append([u, v])
-                registered_nodes[u].push_prev_nodes(registered_nodes[v])
+                registered_nodes[v].push_prev_nodes(registered_nodes[u])
         else:
             break
 
@@ -79,11 +79,11 @@ def run():
         print("----------------------------------------")
         for ver in end_vertices:
             registered_nodes[ver].update_event()
-            
+
     else:
         print("This is not a DAG, dude")
 
-    print("__________")
+    print("----------------------------------------")
     print("Good luck Have fun.")
 
 

@@ -1,5 +1,4 @@
 from aia.NENV import *
-import numpy as np
 
 class ArrayNodeBase(Node):
 
@@ -9,7 +8,7 @@ class ArrayNodeBase(Node):
 
     def update_event(self):
         self.arr = self.get_arr()
-        self.set_data_output(key="unique", obj=self.arr)
+        self.set_data_output(key="array", obj=self.arr)
 
 
 class ReadArray(ArrayNodeBase):
@@ -38,7 +37,10 @@ class ShowArray(ArrayNodeBase):
 
         input = self.get_data_inputs(ind=0)
         if input:
-            arr = input["unique"]
+            if "array" in input.keys():
+                arr = input["array"]
+            else:
+                arr = list()
             print("Show Array")
             print(arr)
         else:

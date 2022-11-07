@@ -1,5 +1,4 @@
 from aia.NENV import *
-import numpy as np
 
 class SortAlgNodeBase(Node):
 
@@ -9,7 +8,7 @@ class SortAlgNodeBase(Node):
 
     def update_event(self):
         self.res = self.sort()
-        self.set_data_output(key="unique", obj=self.res)
+        self.set_data_output(key="array", obj=self.res)
 
 
 class SelectionSort(SortAlgNodeBase):
@@ -23,9 +22,12 @@ class SelectionSort(SortAlgNodeBase):
                     if a[i] < a[j]:
                         a[i], a[j] = a[j], a[i]
 
-        arr = self.get_data_inputs(0)["unique"]
-        if arr:
-            selection_sort(arr, 0, len(arr)-1)
+        arr = list()
+        input = self.get_data_inputs(0)
+        if input:
+            if "array" in input.keys():
+                arr = input["array"].copy()
+                selection_sort(arr, 0, len(arr)-1)
         return arr
 
 
@@ -54,10 +56,13 @@ class MergeSort(SortAlgNodeBase):
                 else:
                     a[l+i] = b[ir-l]
                     ir += 1
-
-        arr = self.get_data_inputs(0)["unique"]
-        if arr:
-            merge_sort(arr, 0, len(arr)-1)
+        
+        arr = list()
+        input = self.get_data_inputs(0)
+        if input:
+            if "array" in input.keys():
+                arr = input["array"].copy()
+                merge_sort(arr, 0, len(arr)-1)
         return arr
 
 
