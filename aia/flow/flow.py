@@ -20,7 +20,7 @@ class Flow:
 
     def toposort(self):
 
-        if not self.vertices or not self.arrows:
+        if not self.vertices:
             return list(), []
         
         num_prev = [0] * len(self.vertices)
