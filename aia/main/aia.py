@@ -34,7 +34,7 @@ def run():
         print("----------------------------------------")
         print("-oOo-       Registered Nodes       -oOo-")
         for gid, node in registered_nodes.items():
-            print("       id:", gid, "and title:", node.title)
+            print("       id:", gid, "and title:", node.__class__.title)
         print("----------------------------------------")
         print("-oOo-            Arrows            -oOo-")
         for arrow in arrows:
@@ -50,7 +50,6 @@ def run():
             ind = int(input("Node's index is: "))
             if 0 <= ind and ind < len(auto_nodes):
                 new_node = auto_nodes[ind]()
-                new_node.title = auto_nodes[ind].title
                 registered_nodes[new_node.global_id] = new_node
 
         elif choice == "2":

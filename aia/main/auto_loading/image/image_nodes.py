@@ -11,7 +11,7 @@ class ImageNodeBase(Node):
 
     def __init__(self):
         super().__init__()
-        self.image = "None"
+        self.image = None
 
     def update_event(self):
         self.image = self.get_image()
@@ -83,58 +83,107 @@ class ShowImage(ImageNodeBase):
                 plt.show()
 
             else:
-                image = "None"
+                image = None
         else:
-            image = "None"
+            image = None
         return image
 
 
 class BlurImage(ImageNodeBase):
-    title = "Gaussian Blur Image"
+    title = "Blur Image"
+    padding = 7
 
     def get_image(self):
 
-        def a_pixel(a):
-            r = 0.0
-            g = 0.0
-            b = 0.0
-            for _ in a:
-                r += _[0]
-                g += _[1]
-                b += _[2]
-            r = int(r/len(a))
-            g = int(g/len(a))
-            b = int(b/len(a))
-            return [r, g, b]
+        def rgb_plus(pixel_1, pixel_2):
+            try:
+                pixel_res = [int(_1) + int(_2) for _1, _2 in zip(pixel_1, pixel_2)]
+            except:
+                pixel_res = [0, 0, 0]
+            return pixel_res
+
+        def rgb_sub(pixel_1, pixel_2):
+            try:
+                pixel_res = [int(_1) - int(_2) for _1, _2 in zip(pixel_1, pixel_2)]
+            except:
+                pixel_res = [0, 0, 0]
+            return pixel_res
+
+        def rgb_divide(pixel, num):
+            try:
+                pixel_res = [int(int(_) / num) for _ in pixel]
+            except:
+                pixel_res = [0, 0, 0]
+            return pixel_res
+
+        def get_min_or_max(a, b, get_min=True):
+            if get_min:
+                if a < b:
+                    return a
+                return b
+            else:
+                if a > b:
+                    return a
+                return b
+
 
         input = self.get_data_inputs(ind=0)
         if input:
             if "image" in input.keys():
                 img = input["image"]
-                img_w = len(img)
-                img_h = len(img[0])
+                if img is not None:
+                    img_w = len(img)
+                    img_h = len(img[0])
+                    padding = __class__.padding
 
-                padding = 5
+                    r = lambda: [None]*img_h
+                    f = [r() for _ in range(img_w)]
 
-                image = []
-                for w in range(img_w):
-                    assembly = []
-                    for h in range(img_h):
-                        
-                        neighbors = []
-                        for ww in range(w-padding, w+padding +1):
-                            if 0 <= ww and ww < img_w:
-                                for hh in range(h-padding, h+padding + 1):
-                                    if 0 <= hh and hh < img_h:
-                                        neighbors.append(img[ww][hh].copy())
-                        assembly.append(a_pixel(neighbors))
+                    f[0][0] = img[0][0].copy()
 
-                    image.append(assembly) 
+                    w = 0
+                    for h in range(1, img_h):
+                        f[w][h] = rgb_plus(img[w][h], f[w][h-1])
 
+                    h = 0
+                    for w in range(1, img_w):
+                        f[w][h] = rgb_plus(img[w][h], f[w-1][h])
+
+                    for w in range(1, img_w):
+                        for h in range(1, img_h):
+                            tmp = rgb_plus(f[w-1][h], f[w][h-1])
+                            tmp = rgb_sub(tmp, f[w-1][h-1])
+                            f[w][h] = rgb_plus(tmp, img[w][h])
+                    
+                    image = [r() for _ in range(img_w)]
+                    for w in range(img_w):
+                        for h in range(img_h):
+                            min_w = get_min_or_max(w-padding, 0, get_min=False)
+                            max_w = get_min_or_max(w+padding, img_w-1, get_min=True)
+                            min_h = get_min_or_max(h-padding, 0, get_min=False)
+                            max_h = get_min_or_max(h+padding, img_h-1, get_min=True)
+
+                            rgb = f[max_w][max_h].copy()
+
+                            if min_w - 1 >= 0:
+                                rgb = rgb_sub(rgb, f[min_w-1][max_h])
+
+                            if min_w - 1 >= 0 and min_h - 1 >= 0:
+                                rgb = rgb_plus(rgb, f[min_w-1][min_h-1])
+
+                            if min_h - 1 >= 0:
+                                rgb = rgb_sub(rgb, f[max_w][min_h-1])
+
+                            num_pixels = (max_w-min_w+1) * (max_h-min_h+1)
+                            image[w][h] = rgb_divide(pixel=rgb, num=num_pixels)
+                    
+                else:
+                    image = None
             else:
-                image = "None"
+                image = None
         else:
-            image = "None"
+            image = None
+
         return image
 
 
