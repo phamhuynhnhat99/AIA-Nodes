@@ -20,11 +20,18 @@ def run():
         sys.path.append(aln_path)
         aln_nodes = aln + "_nodes.py"
         nodes_py = os.path.join(aln_path, aln_nodes)
-        auto_nodes += __import__(os.path.basename(nodes_py)[:-3]).export_nodes
+        try:
+            auto_nodes += __import__(os.path.basename(nodes_py)[:-3]).export_nodes
+        except:
+            continue
     
     flow = Flow()
     arrows = []
     registered_nodes = dict()
+
+    # """ Debug """
+    # auto_nodes[0]().get_image()
+    # return
 
     while True:
         os.system('clear')

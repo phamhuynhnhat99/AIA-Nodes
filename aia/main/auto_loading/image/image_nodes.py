@@ -34,7 +34,7 @@ class ReadImage(ImageNodeBase):
 
             filename = filedialog.askopenfilename(
                 title='Open a file',
-                initialdir='/home/aia/',
+                initialdir='/home/',
                 filetypes=filetypes)
             if filename:
                 root.destroy()
@@ -91,7 +91,7 @@ class ShowImage(ImageNodeBase):
 
 class BlurImage(ImageNodeBase):
     title = "Blur Image"
-    padding = 7
+    padding = 17
 
     def get_image(self):
 
@@ -187,9 +187,9 @@ class BlurImage(ImageNodeBase):
         return image
 
 
-export_nodes = [
-    ReadImage,
-    ShowImage,
-    BlurImage,
+# export_nodes = [
+#     ReadImage,
+#     ShowImage,
+#     BlurImage,
 
-]
+# ]
