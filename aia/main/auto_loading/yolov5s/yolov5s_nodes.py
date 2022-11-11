@@ -19,12 +19,27 @@ class Yolov5sNodeBase(Node):
 class Detector(Yolov5sNodeBase):
 
     title = "Detector (Yolov5s)"
-    min_confidence = 0.0
+    min_confidence = 0.99
 
     def get_image(self):
 
         all_people = list()
-        input = self.get_data_inputs(ind=0)
+        input_1 = self.get_data_inputs(ind=0)
+        input_2 = self.get_data_inputs(ind=1)
+
+        if input_2:
+            if "image" in input_2.keys():
+                input = input_2
+                if "output" in input_1.keys():
+                    __class__.min_confidence = input_1["output"]
+            else:
+                input = input_1
+                if "output" in input_2.keys():
+                    __class__.min_confidence = input_2["output"]
+        else:
+            input = input_1
+
+
         if input:
             if "image" in input.keys():
                 image = input["image"]
@@ -32,9 +47,6 @@ class Detector(Yolov5sNodeBase):
                 Yolov5sWidget = widgets.Yolov5sWidget()
                 predict_df = Yolov5sWidget.get_predict_df(image)
                 person_df = predict_df.loc[predict_df['class'] == 0]
-
-                MinConfidenceBoxWidget = widgets.MinConfidenceBoxWidget()
-                __class__.min_confidence = MinConfidenceBoxWidget.get_min_confidence()
 
                 for index, person in person_df.iterrows():
                     if person['confidence'] >= __class__.min_confidence:

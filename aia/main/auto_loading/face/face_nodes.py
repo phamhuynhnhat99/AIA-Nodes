@@ -22,7 +22,7 @@ class Detector(FaceNodeBase):
     title = "Detector (MTCNN)"
     detector = MTCNN()
 
-    min_confidence = 0.6
+    min_confidence = 0.0
 
     def get_image(self):
 
@@ -33,8 +33,10 @@ class Detector(FaceNodeBase):
                 image = input["image"]
 
                 faces = __class__.detector.detect_faces(image)
+                MinConfidenceBoxWidget = widgets.MinConfidenceBoxWidget()
+                __class__.min_confidence = MinConfidenceBoxWidget.get_min_confidence()
 
-                color = (0, 255, 0)
+                color = (0, 0, 255)
                 thickness = 2
                 detector = []
                 for face in faces:
