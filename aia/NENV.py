@@ -21,11 +21,14 @@ def init_node_env():
 def import_widgets(origin_file: str, rel_file_path='widgets.py'):
 
     from importlib.machinery import SourceFileLoader
-
-    widgets_path = os.path.join(os.path.dirname(origin_file), rel_file_path)
-    module_name = os.path.dirname(origin_file).split("/")[-1]
-    rel_widgets = SourceFileLoader(module_name, widgets_path).load_module()
+    try:
+        widgets_path = os.path.join(os.path.dirname(origin_file), rel_file_path)
+        module_name = os.path.dirname(origin_file).split("/")[-1]
+        rel_widgets = SourceFileLoader(module_name, widgets_path).load_module()
+        widgets = rel_widgets.export_widgets
+    except:
+        widgets = None
     
-    return rel_widgets.export_widgets
+    return widgets
 
 

@@ -21,7 +21,7 @@ class ReadImage(Cv2NodeBase):
         # readImageWidget = widgets.ReadImageWidget()
         readImageWidget = widgets.ReadImageWidget()
         image_path = readImageWidget.get_image_path()
-        image = cv2.imread(image_path, cv2.IMREAD_COLOR)
+        image = cv2.cvtColor(cv2.imread(image_path), cv2.IMREAD_COLOR)
         return image
 
 
