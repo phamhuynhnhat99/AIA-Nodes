@@ -19,15 +19,10 @@ def init_node_env():
 
 
 def import_widgets(origin_file: str, rel_file_path='widgets.py'):
-    """
-    Import all exported widgets from 'widgets.py' with respect to the origin_file location.
-    Returns an object with all exported widgets as attributes for direct access.
-    """
 
-    dir_location = os.path.dirname(origin_file)
-    abs_widgets_path = os.path.join(dir_location, rel_file_path)
+    from importlib.machinery import SourceFileLoader
 
-    sys.path.append(dir_location)
-    widgets = __import__("widgets").export_widgets
-
-    return widgets
+    widgets_path = os.path.join(os.path.dirname(origin_file), rel_file_path)
+    module_name = os.path.dirname(origin_file).split("/")[-1]
+    foo = SourceFileLoader(module_name, widgets_path).load_module()
+    return foo.export_widgets

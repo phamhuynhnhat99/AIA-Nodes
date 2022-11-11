@@ -34,14 +34,15 @@ def run():
     # return
 
     while True:
-        os.system('clear')
-        print("List of nodes")
+        # os.system('clear')
+        print("----------------------------------------")
+        print("-oOo-         All of nodes         -oOo-")
         for i, node in enumerate(auto_nodes):
-            print(i, node.title)
+            print("    ", i, node.title)
         print("----------------------------------------")
         print("-oOo-       Registered Nodes       -oOo-")
         for gid, node in registered_nodes.items():
-            print("       id:", gid, "and title:", node.__class__.title)
+            print("    id:", gid, "and title:", node.__class__.title)
         print("----------------------------------------")
         print("-oOo-            Arrows            -oOo-")
         for arrow in arrows:
