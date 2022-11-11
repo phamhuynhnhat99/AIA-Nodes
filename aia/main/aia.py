@@ -29,12 +29,8 @@ def run():
     arrows = []
     registered_nodes = dict()
 
-    # """ Debug """
-    # auto_nodes[0]().get_image()
-    # return
-
     while True:
-        # os.system('clear')
+        os.system('clear')
         print("----------------------------------------")
         print("-oOo-         All of nodes         -oOo-")
         for i, node in enumerate(auto_nodes):
@@ -44,11 +40,11 @@ def run():
         for gid, node in registered_nodes.items():
             print("    id:", gid, "and title:", node.__class__.title)
         print("----------------------------------------")
-        print("-oOo-            Arrows            -oOo-")
+        print("-oOo-     Registered Directions    -oOo-")
         for arrow in arrows:
             print("              ", arrow[0], '---->', arrow[1])
         print("----------------------------------------")
-        print("❤️  Welcome to my world ❤️")
+        print("❤️ ❤️ ❤️ ❤️ ❤️  Welcome to my world ❤️ ❤️ ❤️ ❤️ ❤️")
         print("0: Exit")
         print("1: Registering a new node")
         print("2: Registering a direction")

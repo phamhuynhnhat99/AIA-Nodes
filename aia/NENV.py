@@ -24,5 +24,8 @@ def import_widgets(origin_file: str, rel_file_path='widgets.py'):
 
     widgets_path = os.path.join(os.path.dirname(origin_file), rel_file_path)
     module_name = os.path.dirname(origin_file).split("/")[-1]
-    foo = SourceFileLoader(module_name, widgets_path).load_module()
-    return foo.export_widgets
+    rel_widgets = SourceFileLoader(module_name, widgets_path).load_module()
+    
+    return rel_widgets.export_widgets
+
+
