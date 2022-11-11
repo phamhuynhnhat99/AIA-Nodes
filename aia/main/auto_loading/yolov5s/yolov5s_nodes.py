@@ -19,7 +19,7 @@ class Yolov5sNodeBase(Node):
 class Detector(Yolov5sNodeBase):
 
     title = "Detector (Yolov5s)"
-    min_confidence = 0.7
+    min_confidence = 0.0
 
     def get_image(self):
 
@@ -33,8 +33,11 @@ class Detector(Yolov5sNodeBase):
                 predict_df = Yolov5sWidget.get_predict_df(image)
                 person_df = predict_df.loc[predict_df['class'] == 0]
 
+                MinConfidenceBoxWidget = widgets.MinConfidenceBoxWidget()
+                __class__.min_confidence = MinConfidenceBoxWidget.get_min_confidence()
+
                 for index, person in person_df.iterrows():
-                    if person['confidence'] > __class__.min_confidence:
+                    if person['confidence'] >= __class__.min_confidence:
                         xmin, xmax = int(person.xmin), int(person.xmax)
                         ymin, ymax = int(person.ymin), int(person.ymax)
                         all_people.append((xmin, ymin, xmax, ymax))
