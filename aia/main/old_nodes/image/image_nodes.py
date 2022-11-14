@@ -187,9 +187,9 @@ class BlurImage(ImageNodeBase):
         return image
 
 
-# export_nodes = [
-#     ReadImage,
-#     ShowImage,
-#     BlurImage,
+export_nodes = [
+    ReadImage,
+    ShowImage,
+    BlurImage,
 
-# ]
+]

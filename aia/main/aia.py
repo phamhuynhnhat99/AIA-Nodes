@@ -9,9 +9,8 @@ def run():
     init_node_env()
 
     """ Auto loading """
-    par_path = os.path.abspath(os.path.join(__file__, ".."))
-    auto_loading_path = os.path.abspath(os.path.join(par_path, "auto_loading"))
 
+    auto_loading_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "auto_loading"))
     auto_loading_nodes = os.listdir(auto_loading_path)
 
     auto_nodes = []
@@ -28,6 +27,7 @@ def run():
     flow = Flow()
     arrows = []
     registered_nodes = dict()
+    order = []
 
     while True:
         os.system('clear')
@@ -38,16 +38,23 @@ def run():
         print("----------------------------------------")
         print("-oOo-       Registered Nodes       -oOo-")
         for gid, node in registered_nodes.items():
-            print("    id:", gid, "and title:", node.__class__.title)
+            print("    id:", gid, "   ", node.__class__.title)
         print("----------------------------------------")
         print("-oOo-     Registered Directions    -oOo-")
-        for arrow in arrows:
-            print("              ", arrow[0], '---->', arrow[1])
+        for id, arrow in enumerate(arrows):
+            print("    id:", id, "      ", arrow[0], '---->', arrow[1])
+        print("----------------------------------------")
+        print("-oOo-           Toposort           -oOo-")
+        if order:
+            print(order)
+        else:
+            print("This is not a DAG")
         print("----------------------------------------")
         print("❤️ ❤️ ❤️ ❤️ ❤️  Welcome to my world ❤️ ❤️ ❤️ ❤️ ❤️")
-        print("0: Exit")
+        print("0: Exit Program")
         print("1: Registering a new node")
         print("2: Registering a direction")
+        print("3: Update a node")
         choice = input("You choice is: ")
         print("----------------------------------------")
         if choice == "1":
@@ -56,35 +63,33 @@ def run():
                 new_node = auto_nodes[ind]()
                 registered_nodes[new_node.global_id] = new_node
 
+                registered_nodes[new_node.global_id].update_event()
+
+                tmp_vertices = [gid for gid in registered_nodes.keys()]
+                print(tmp_vertices, arrows)
+                flow.constructor(vertices=tmp_vertices, arrows=arrows)
+                order = flow.toposort()
+
         elif choice == "2":
             arrow = input("Enter an arrow: ").split(" ")
             u = int(arrow[0])
             v = int(arrow[1])
             if u in registered_nodes.keys() and v in registered_nodes.keys():
-                arrows.append([u, v])
-                registered_nodes[v].push_prev_nodes(registered_nodes[u])
+                if [u, v] not in arrows:
+                    arrows.append([u, v])
+                    registered_nodes[v].push_prev_nodes(registered_nodes[u])
+
+                    flow.constructor(vertices=list(registered_nodes.keys()), arrows=arrows)
+                    order = flow.toposort()
+
+        elif choice == "3":
+            gid = int(input("Node's Global ID is: "))
+            if gid in registered_nodes.keys():
+                genealogy_of_u = flow.sub_toposort_from(gid)
+                for ver in genealogy_of_u:
+                    registered_nodes[ver].update_event()
         else:
             break
-
-    flow.constructor(vertices=list(registered_nodes.keys()), arrows=arrows)
-    order, end_vertices = flow.toposort()
-
-    if order:
-        print("Toposort")
-        print(order)
-        print("----------------------------------------")
-        for ver in order:
-            if not ver in end_vertices:
-                registered_nodes[ver].update_event()
-        
-        print("All of End Vertices")
-        print(end_vertices)
-        print("----------------------------------------")
-        for ver in end_vertices:
-            registered_nodes[ver].update_event()
-
-    else:
-        print("This is not a DAG, dude")
 
     print("----------------------------------------")
     print("Good luck Have fun.")

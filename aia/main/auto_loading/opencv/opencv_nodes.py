@@ -18,7 +18,6 @@ class ReadImage(Cv2NodeBase):
     title = "Read Image (OpenCV)"
 
     def get_image(self):
-        # readImageWidget = widgets.ReadImageWidget()
         readImageWidget = widgets.ReadImageWidget()
         image_path = readImageWidget.get_image_path()
         image = cv2.cvtColor(cv2.imread(image_path), cv2.IMREAD_COLOR)
@@ -36,11 +35,13 @@ class ShowImage(Cv2NodeBase):
 
                 cv2.imshow(__class__.title, image)
                 cv2.waitKey(0)
+                cv2.destroyAllWindows()
 
             else:
                 image = None
         else:
             image = None
+            
         return image
 
 
@@ -56,7 +57,6 @@ class BlurImage(Cv2NodeBase):
                 if img is not None:
                     ksize = (__class__.padding, __class__.padding)
                     image = cv2.blur(img, ksize)
-
                 else:
                     image = None
             else:
@@ -83,7 +83,6 @@ class ResizeImage(Cv2NodeBase):
                     dim = (resize_w, resize_h)
                     # resize image
                     image = cv2.resize(img, dim, interpolation = cv2.INTER_AREA)
-
                 else:
                     image = None
             else:

@@ -28,9 +28,9 @@ class FloatInput(TextNodeBase):
     
     def get_output(self):
 
-        FloatTextWidget = widgets.FloatTextWidget()
-        FloatTextWidget.set_title(self.title)
-        output = FloatTextWidget.get_float_text()
+        FloatInputWidget = widgets.FloatInputWidget()
+        FloatInputWidget.set_title(self.title)
+        output = FloatInputWidget.get_float_text()
 
         return output
 

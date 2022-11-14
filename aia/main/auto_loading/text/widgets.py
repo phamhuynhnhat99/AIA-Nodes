@@ -1,6 +1,6 @@
 from tkinter import *
 
-class FloatTextWidget():
+class FloatInputWidget():
 
     def __init__(self):
         self.float_text = 0.0
@@ -59,5 +59,5 @@ class FloatTextWidget():
 
 class export_widgets:
 
-    FloatTextWidget = FloatTextWidget
+    FloatInputWidget = FloatInputWidget
 
