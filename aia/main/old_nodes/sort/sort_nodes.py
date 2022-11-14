@@ -66,7 +66,7 @@ class MergeSort(SortAlgNodeBase):
         return arr
 
 
-# export_nodes = [
-#     SelectionSort,
-#     MergeSort,
-# ]
+export_nodes = [
+    SelectionSort,
+    MergeSort,
+]

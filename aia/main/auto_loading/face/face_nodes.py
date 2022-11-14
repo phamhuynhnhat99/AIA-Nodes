@@ -2,7 +2,6 @@ from aia.NENV import *
 
 widgets = import_widgets(__file__)
 
-from mtcnn import MTCNN
 import cv2
 
 class FaceNodeBase(Node):
@@ -11,49 +10,58 @@ class FaceNodeBase(Node):
         self.image = None
 
     def update_event(self):
-        self.image, detector = self.get_image()
+        self.image, all_people = self.get_image()
         self.set_data_output(key="image", obj=self.image)
-        if detector is not None:
-            self.set_data_output(key="detector", obj=detector)
+        if all_people is not None:
+            self.set_data_output(key="bounding boxes", obj=all_people)
 
 
-class Detector(FaceNodeBase):
+class MtcnnDetector(FaceNodeBase):
 
     title = "Detector (MTCNN)"
-    detector = MTCNN()
-
-    min_confidence = 0.0
+    min_confidence = 0.99
 
     def get_image(self):
 
         all_people = list()
-        input = self.get_data_inputs(ind=0)
+        input_0, input_1 = self.get_data_inputs(ind=0), self.get_data_inputs(ind=1)
+
+        if input_1: # There are 2 previous nodes
+            if "image" in input_1.keys():
+                input = input_1
+                if "output" in input_0.keys():
+                    __class__.min_confidence = input_0["output"]
+            else:
+                input = input_0
+                if "output" in input_1.keys():
+                    __class__.min_confidence = input_1["output"]
+        else:
+            input = input_0
+
         if input:
             if "image" in input.keys():
                 image = input["image"]
 
-                faces = __class__.detector.detect_faces(image)
-                MinConfidenceBoxWidget = widgets.MinConfidenceBoxWidget()
-                __class__.min_confidence = MinConfidenceBoxWidget.get_min_confidence()
+                MtcnnDetectorWidget = widgets.MtcnnDetectorWidget()
+                faces = MtcnnDetectorWidget.detector.detect_faces(image)
 
-                color = (0, 0, 255)
+                color = (0, 0, 255) # red
                 thickness = 2
-                detector = []
                 for face in faces:
                     if face['confidence'] > __class__.min_confidence:
                         xmin, ymin, w, h = face["box"]
                         xmax, ymax = xmin + w - 1, ymin + h - 1
-                        detector.append((xmin, ymin, xmax, ymax))
+                        all_people.append((xmin, ymin, xmax, ymax))
                         image = cv2.rectangle(image, (xmin, ymin), (xmax, ymax), color, thickness)
 
             else:
                 image = None
         else:
             image = None
-        return image, detector
+        return image, all_people
 
 
 export_nodes = [
-    Detector,
+    MtcnnDetector,
 
 ]

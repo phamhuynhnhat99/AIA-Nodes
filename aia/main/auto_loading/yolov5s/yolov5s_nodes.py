@@ -16,7 +16,7 @@ class Yolov5sNodeBase(Node):
             self.set_data_output(key="bounding boxes", obj=all_people)
 
 
-class Detector(Yolov5sNodeBase):
+class Yolov5sDetector(Yolov5sNodeBase):
 
     title = "Detector (Yolov5s)"
     min_confidence = 0.99
@@ -27,7 +27,7 @@ class Detector(Yolov5sNodeBase):
         input_1 = self.get_data_inputs(ind=0)
         input_2 = self.get_data_inputs(ind=1)
 
-        if input_2:
+        if input_2: # There are 2 previous nodes
             if "image" in input_2.keys():
                 input = input_2
                 if "output" in input_1.keys():
@@ -46,7 +46,7 @@ class Detector(Yolov5sNodeBase):
 
                 Yolov5sWidget = widgets.Yolov5sWidget()
                 predict_df = Yolov5sWidget.get_predict_df(image)
-                person_df = predict_df.loc[predict_df['class'] == 0]
+                person_df = predict_df.loc[predict_df['class'] == 0] # human
 
                 for index, person in person_df.iterrows():
                     if person['confidence'] >= __class__.min_confidence:
@@ -54,7 +54,7 @@ class Detector(Yolov5sNodeBase):
                         ymin, ymax = int(person.ymin), int(person.ymax)
                         all_people.append((xmin, ymin, xmax, ymax))
 
-                color = (255, 0, 0)
+                color = (255, 0, 0) # blue
                 thickness = 2
                 for xmin, ymin, xmax, ymax in all_people:
                     image = cv2.rectangle(image, (xmin, ymin), (xmax, ymax), color, thickness)
@@ -67,6 +67,6 @@ class Detector(Yolov5sNodeBase):
 
 
 export_nodes = [
-    Detector,
+    Yolov5sDetector,
 
 ]
