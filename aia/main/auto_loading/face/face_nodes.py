@@ -19,7 +19,7 @@ class FaceNodeBase(Node):
 class MtcnnDetector(FaceNodeBase):
 
     title = "Detector (MTCNN)"
-    min_confidence = 0.99
+    min_confidence = 0.7
 
     def get_image(self):
 

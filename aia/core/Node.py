@@ -79,6 +79,13 @@ class Node(Base):
         elif ind < len(self.prev_nodes):
             self.prev_nodes[ind] = obj
 
+    
+    def remove_prev_node(self, obj):
+        if obj in self.prev_nodes:
+            self.prev_nodes.remove(obj)
+            self.update_data_inputs()
+
+
 
     """ RESET """
     def reset_all(self):

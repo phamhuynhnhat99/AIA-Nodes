@@ -7,7 +7,7 @@ class Flow:
         self.decode_arrows = []
 
 
-    def constructor(self, vertices, arrows):
+    def update_graph(self, vertices, arrows):
         self.decode_vertices = vertices
         self.decode_arrows = arrows
 
@@ -39,8 +39,6 @@ class Flow:
 
     def toposort(self):
         
-        print("????")
-
         if not self.vertices:
             return []
 

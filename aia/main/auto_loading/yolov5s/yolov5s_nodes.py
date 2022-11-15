@@ -19,7 +19,7 @@ class Yolov5sNodeBase(Node):
 class Yolov5sDetector(Yolov5sNodeBase):
 
     title = "Detector (Yolov5s)"
-    min_confidence = 0.99
+    min_confidence = 0.799
 
     def get_image(self):
 
