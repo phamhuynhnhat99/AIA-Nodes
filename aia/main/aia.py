@@ -28,7 +28,7 @@ def run():
             continue
 
     while True:
-        # os.system('clear')
+        os.system('clear')
         print("----------------------------------------")
         coordinator.display_auto_nodes()
         print("----------------------------------------")
