@@ -90,11 +90,6 @@ class Coordinator:
             self.updating_a_registered_node(v)
 
 
-    def updating_order(self):
-        pass
-
-
-
 class export_widgets:
 
     Coordinator = Coordinator

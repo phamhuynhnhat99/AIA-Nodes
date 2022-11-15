@@ -40,11 +40,12 @@ class MtcnnDetector(FaceNodeBase):
 
         if input:
             if "image" in input.keys():
-                image = input["image"]
+                img = input["image"]
 
                 MtcnnDetectorWidget = widgets.MtcnnDetectorWidget()
-                faces = MtcnnDetectorWidget.detector.detect_faces(image)
+                faces = MtcnnDetectorWidget.detector.detect_faces(img)
 
+                image = img.copy()
                 color = (0, 0, 255) # red
                 thickness = 2
                 for face in faces:

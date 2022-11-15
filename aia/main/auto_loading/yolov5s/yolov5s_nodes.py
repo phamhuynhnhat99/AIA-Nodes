@@ -42,10 +42,10 @@ class Yolov5sDetector(Yolov5sNodeBase):
 
         if input:
             if "image" in input.keys():
-                image = input["image"]
+                img = input["image"]
 
                 Yolov5sWidget = widgets.Yolov5sWidget()
-                predict_df = Yolov5sWidget.get_predict_df(image)
+                predict_df = Yolov5sWidget.get_predict_df(img)
                 person_df = predict_df.loc[predict_df['class'] == 0] # human
 
                 for index, person in person_df.iterrows():
@@ -54,6 +54,8 @@ class Yolov5sDetector(Yolov5sNodeBase):
                         ymin, ymax = int(person.ymin), int(person.ymax)
                         all_people.append((xmin, ymin, xmax, ymax))
 
+                image = img.copy()
+                
                 color = (255, 0, 0) # blue
                 thickness = 2
                 for xmin, ymin, xmax, ymax in all_people:
