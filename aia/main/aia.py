@@ -12,11 +12,9 @@ def run():
 
     coordinator = utils.Coordinator()
 
-    """ Auto loading """
-
+    """ Load all of nodes that from aia.main.auto_loading folder """
     auto_loading_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "auto_loading"))
     auto_loading_nodes = os.listdir(auto_loading_path)
-
     for aln in auto_loading_nodes:
         aln_path = os.path.join(auto_loading_path, aln)
         sys.path.append(aln_path)
@@ -26,7 +24,8 @@ def run():
             coordinator.auto_nodes += __import__(os.path.basename(nodes_py)[:-3]).export_nodes
         except:
             continue
-
+    
+    """ Infinity Loop """
     while True:
         os.system('clear')
         print("----------------------------------------")

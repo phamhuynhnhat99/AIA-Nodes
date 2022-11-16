@@ -3,17 +3,26 @@ from aia.flow.flow import Flow
 class Coordinator:
 
     def __init__(self):
+        # Topo
         self.flow = Flow()
+
+        # all of nodes that may be used
         self.auto_nodes = []
+
+        # all of directions
         self.arrows = []
-        self.registered_nodes = dict()
+
+        # Contain nodes that are registered from self.auto_nodes
+        self.registered_nodes = dict() # key = gid, value = Node
+
+        # Toposort Result
         self.order = []
 
 
     def display_auto_nodes(self):
         print("-oOo-         All of nodes         -oOo-")
-        for i, node in enumerate(self.auto_nodes):
-            print("    Index:", i, "   ", node.title)
+        for i, node_class in enumerate(self.auto_nodes):
+            print("    Index:", i, "   ", node_class.title)
 
     
     def display_registered_nodes(self):
@@ -40,8 +49,9 @@ class Coordinator:
 
     
     def updating_a_registered_node(self, gid):
+        """ get its descendants and "update_event" all of them """
         if gid in self.registered_nodes.keys():
-            if self.order is not None:
+            if self.order is not None: # Topo Existing
                 genealogy_of_u = self.flow.sub_toposort_from(gid)
                 for ver in genealogy_of_u:
                     self.registered_nodes[ver].update_event()
@@ -60,14 +70,19 @@ class Coordinator:
             if [u, v] not in self.arrows:
                 self.arrows.append([u, v])
                 self.registered_nodes[v].push_prev_nodes(self.registered_nodes[u])
+
                 self.updating_toposort()
+                # get vertex v's descendants and "update_event" all of them
                 self.updating_a_registered_node(v)
 
 
     def removing_a_registered_node(self, gid):
         if gid in self.registered_nodes.keys():
+
+            # get vertex's descendants (before vertex will be removed)
             genealogy_of_u = self.flow.sub_toposort_from(gid)
             
+            # get arrows that contain gid (vertex)
             sub_arrows = [arrow for arrow in self.arrows if gid in arrow]
             for arrow in sub_arrows:
                 u = arrow[0]
@@ -75,18 +90,23 @@ class Coordinator:
                 self.registered_nodes[v].remove_prev_node(self.registered_nodes[u])
                 self.arrows.remove(arrow)
 
+            # Delete node
             del self.registered_nodes[gid]
-            
-            self.updating_toposort()
-            for ver in genealogy_of_u:
-                self.registered_nodes[ver].update_event()
 
+            self.updating_toposort()
+            # Update its descendants
+            for ver in genealogy_of_u:
+                if ver != gid:
+                    self.registered_nodes[ver].update_event()
+            
 
     def removing_a_registered_arrow(self, u, v):
         if [u, v] in self.arrows:
             self.arrows.remove([u, v])
             self.registered_nodes[v].remove_prev_node(self.registered_nodes[u])
+
             self.updating_toposort()
+            # get vertex v's descendants and "update_event" all of them
             self.updating_a_registered_node(v)
 
 

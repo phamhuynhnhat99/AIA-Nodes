@@ -51,6 +51,7 @@ class Flow:
             if self.num_prev[ver] == 0:
                 topo_queue.append(ver)
         
+        # toposort
         self.order = []
         b_ind, e_ind = 0, 0
         while b_ind <= e_ind:
@@ -70,7 +71,7 @@ class Flow:
             else:
                 break
         
-        if e_ind < len(self.vertices):
+        if e_ind < len(self.vertices): # This is not a DAG
             self.order = []
             self.end_vertices = []
 
@@ -81,7 +82,7 @@ class Flow:
         return decode_toposort
 
     
-    def sub_toposort_from(self, vertex):     
+    def sub_toposort_from(self, vertex): # Get all vertex's descendants (include vertex)
         if vertex not in self.decode_vertices:
             return []
         
