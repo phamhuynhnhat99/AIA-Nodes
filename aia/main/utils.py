@@ -1,3 +1,5 @@
+import os
+import sys
 from aia.flow.flow import Flow
 
 class Coordinator:
@@ -17,6 +19,21 @@ class Coordinator:
 
         # Toposort Result
         self.order = []
+
+    
+    def auto_loading(self):
+        """ Load all of nodes that from aia.main.auto_loading folder """
+        auto_loading_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "auto_loading"))
+        auto_loading_nodes = os.listdir(auto_loading_path)
+        for aln in auto_loading_nodes:
+            aln_path = os.path.join(auto_loading_path, aln)
+            sys.path.append(aln_path)
+            aln_nodes = aln + "_nodes.py"
+            nodes_py = os.path.join(aln_path, aln_nodes)
+            try:
+                self.auto_nodes += __import__(os.path.basename(nodes_py)[:-3]).export_nodes
+            except:
+                continue
 
 
     def display_auto_nodes(self):
