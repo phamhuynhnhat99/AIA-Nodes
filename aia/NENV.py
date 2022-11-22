@@ -1,6 +1,7 @@
 import os
 import sys
 from aia.core.Node import Node as Node_
+from aia.gui_core.cell_op import CellOp as CellOp_
 
 
 Node = None
@@ -11,9 +12,9 @@ def init_node_env():
 
     if os.environ['AIA_MODE'] == 'gui':
 
-        pass
+        Node = CellOp_
 
-    else:
+    else: # os.environ['AIA_MODE'] == 'no-gui':
         
         Node = Node_
 
