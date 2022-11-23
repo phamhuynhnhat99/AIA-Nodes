@@ -20,7 +20,6 @@ class AIACanvas(tk.Canvas):
                 self.arrows.append(arrow)
                 self.v.cellinputs[self.IDc] = self.u
                 self.line = CellLine(self, self.u, self.v)
-                self.v.update()
             else:
                 self.arrows.remove(arrow)
                 self.v.cellinputs[self.IDc] = None
@@ -28,7 +27,8 @@ class AIACanvas(tk.Canvas):
                     self.delete(self.v.celllineinputs[self.IDc].ID)
                 except:
                     None
-                self.v.update()
+                    
+            self.v.update()
             self.reset()
 
     def reset(self):

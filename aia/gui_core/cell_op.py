@@ -3,7 +3,7 @@ from .cell_value import CellValue
 import tkinter as tk
 
 class CellOp(Cell):
-    def __init__(self, canvas, num_inp=0, num_out=1, text = 'CellOp', W = 50, H = 50):
+    def __init__(self, canvas, num_inp=0, num_out=1, view = "", text = '', W = 50, H = 50):
         if num_inp >= 0:
             self.num_inp = num_inp
         else:
@@ -11,7 +11,7 @@ class CellOp(Cell):
         self.num_out = num_out
 
         center = (W, H)
-        super().__init__(canvas=canvas, W=W, H=H, text=text, center=center)
+        super().__init__(canvas=canvas, view=view,  W=W, H=H, text=text, center=center)
         self.text = text
         self.canvas = canvas
         self.celllineinputs = dict()
@@ -39,13 +39,13 @@ class CellOp(Cell):
 
     def bindtoclick(self):
         for _, cellvalueinput in self.cellvalueinputs.items():
-            self.canvas.tag_bind(cellvalueinput.ID, '<1>', self.b1_inputs_lambda(_))
-        self.canvas.tag_bind(self.cellvalueoutput_.ID, '<1>', self.b1_output_lambda())
+            self.canvas.tag_bind(cellvalueinput.ID, '<1>', self.is_v_cell(_))
+        self.canvas.tag_bind(self.cellvalueoutput_.ID, '<1>', self.is_u_cell())
 
-    def b1_inputs_lambda(self, ind):
+    def is_v_cell(self, ind):
         return lambda event: self.b1_inputs(event, ind)
     
-    def b1_output_lambda(self):
+    def is_u_cell(self):
         return lambda event: self.b1_output(event)
     
     def b1_inputs(self, event, ind):

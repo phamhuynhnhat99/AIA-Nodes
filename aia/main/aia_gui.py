@@ -16,12 +16,9 @@ def run():
     root.title('AIA-Nodes')
     aiacanvas = AIACanvas(root)
 
-    cell = ReadImage(aiacanvas, num_inp=0, num_out=1, W = 180, H = 100)
-    cell.update()
+    # cell = ReadImage(aiacanvas, num_inp=0, num_out=1, view = "button", W = 250, H = 150)
 
-    cell = ShowImage(aiacanvas, num_inp=2, num_out=1, W = 180, H = 100)
-    cell.update()
-
+    cell = ShowImage(aiacanvas, num_inp=1, num_out=1, view = "image", W = 400, H = 300)
 
     aiacanvas.pack()
     root.mainloop()

@@ -10,7 +10,7 @@ class CellLine():
         
 
     def create(self):
-        self.u_cell.line = self
+        # self.u_cell.line = self
         self.x1, self.y1 = self.u_cell.cellvalueoutput_.center
         self.x2, self.y2 = self.v_cell.cellvalueinputs[self.IDc].center
         self.v_cell.celllineinputs[self.IDc] = self
