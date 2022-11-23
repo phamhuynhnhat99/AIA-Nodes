@@ -47,11 +47,12 @@ class Cell:
                 width = self.LINEW,
                 fill = self.FILL)
             self.need_center = True
+            text_pos = (self.center[0], self.center[1])
         else:
             #Load an image in the script
-            self.img = Image.open("/home/aia/Nhat/AIA-Nodes/test.png")
+            self.img = Image.open("/home/aia/Nhat/AIA-Nodes/aia.png")
             w, h = self.img.size
-            scale = self.W / (w if w > h else h)
+            scale = (self.W if self.W < self.H else self.H)/ (w if w > h else h)
             new_w, new_h = int(scale * w), int(scale * h)
             new_size = (new_w, new_h)
             self.img = ImageTk.PhotoImage(self.img.resize(new_size))
@@ -62,9 +63,9 @@ class Cell:
                 anchor="center",
                 image = self.img)
             self.need_center = False
+            text_pos = (self.center[0], self.center[1]-self.H//2)
 
-        northern = (self.center[0], self.center[1]-self.W//2)
-        self.IDtext = self.canvas.create_text(northern, text = self.text)
+        self.IDtext = self.canvas.create_text(text_pos, text = self.text)
         self.allIDs = [self.ID, self.IDtext]
         self.auxlist = [self.ID, self.IDtext]
     

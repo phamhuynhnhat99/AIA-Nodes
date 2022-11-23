@@ -2,6 +2,8 @@ from .cell import Cell
 from .cell_value import CellValue
 import tkinter as tk
 
+from PIL import ImageTk
+
 class CellOp(Cell):
     def __init__(self, canvas, num_inp=0, num_out=1, view = "", text = '', W = 50, H = 50):
         if num_inp >= 0:
@@ -17,8 +19,10 @@ class CellOp(Cell):
         self.celllineinputs = dict()
 
         self.cellvalueoutput_ = CellValue(canvas, r=10, center=(1.5*W, H))
+        if num_inp == 0:
+            self.cellvalueoutput_.value = self.get_output()
         self.celloutput_ = None
-
+            
         self.cellvalueinputs = dict()
         self.cellinputs = dict()
 
@@ -27,7 +31,6 @@ class CellOp(Cell):
             for _ in range(self.num_inp):
                 new_cellvalue = CellValue(canvas, r=10, center=(0.5*W, 0.5*H + (_+1)*space))
                 self.cellvalueinputs[_] = new_cellvalue
-                self.cellinputs[_] = None
 
         IDs = [self.cellvalueoutput_.ID]
         for cellvalueinput in self.cellvalueinputs.values():
@@ -49,29 +52,29 @@ class CellOp(Cell):
         return lambda event: self.b1_output(event)
     
     def b1_inputs(self, event, ind):
-        try:
-            self.canvas.delete(self.celllineinputs[ind].ID) # remove old arrow
-        except:
-            None
+        self.canvas.update_old_u(self, ind)
+
         self.canvas.clickcount += 1
         self.canvas.IDc = ind
         self.canvas.v = self # v
         if self.canvas.clickcount == 2: # two vertices have been selected
-            self.canvas.clickcount = 0
-            if self.canvas.u != self: # u != v
-                self.canvas.conectcells()
+            self.canvas.conectcells()
 
     def b1_output(self, event):
         self.canvas.clickcount += 1
         self.canvas.u = self # u
         if self.canvas.clickcount == 2: # two vertices have been selected
-            self.canvas.clickcount = 0
-            if self.canvas.v != self: # v != u
-                self.canvas.conectcells()
+            self.canvas.conectcells()
 
     def update(self):
         try:
             self.cellvalueoutput_.value = self.get_output()
         except:
             None
+        
+        self.img = ImageTk.PhotoImage(self.cellvalueoutput_.value)
+        
+        if self.view == "image":
+            self.canvas.itemconfig(self.ID, image=self.img)
+
         self.canvas.after(50, self.update)

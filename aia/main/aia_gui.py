@@ -10,13 +10,14 @@ def run():
     os.environ['AIA_MODE'] = 'gui'
     init_node_env()
 
-    from aia.main.gui_nodes.opencv.opencv_nodes import ReadImage, ShowImage
+    from aia.main.gui_nodes.opencv.opencv_nodes import ReadImage, ReadImageClone, ShowImage
 
     root = tkinter.Tk()
     root.title('AIA-Nodes')
     aiacanvas = AIACanvas(root)
 
-    # cell = ReadImage(aiacanvas, num_inp=0, num_out=1, view = "button", W = 250, H = 150)
+    cell = ReadImage(aiacanvas, num_inp=0, num_out=1, view = "button", W = 200, H = 50)
+    cell = ReadImageClone(aiacanvas, num_inp=0, num_out=1, view = "button", W = 200, H = 50)
 
     cell = ShowImage(aiacanvas, num_inp=1, num_out=1, view = "image", W = 400, H = 300)
 
