@@ -52,7 +52,8 @@ class CellOp(Cell):
         return lambda event: self.b1_output(event)
     
     def b1_inputs(self, event, ind):
-        self.canvas.update_old_u(self, ind)
+        if ind in self.cellinputs.keys():
+            self.canvas.old_u_id = self.cellinputs[ind].global_id
 
         self.canvas.clickcount += 1
         self.canvas.IDc = ind

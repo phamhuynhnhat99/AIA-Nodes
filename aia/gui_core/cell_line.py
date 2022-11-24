@@ -11,9 +11,9 @@ class CellLine():
 
     def create(self):
         self.x1, self.y1 = self.u_cell.cellvalueoutput_.center
-        self.x2, self.y2 = self.v_cell.cellvalueinputs[self.IDc].center
+        self.x2, self.y2 = self.v_cell.cellvalueinputs[self.canvas.IDc].center
         
-        self.v_cell.celllineinputs[self.IDc] = self
+        self.v_cell.celllineinputs[self.canvas.IDc] = self
 
         x1, y1, x2, y2 = self.x1, self.y1, self.x2, self.y2
 

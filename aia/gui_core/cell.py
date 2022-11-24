@@ -63,7 +63,7 @@ class Cell:
                 anchor="center",
                 image = self.img)
             self.need_center = False
-            text_pos = (self.center[0], self.center[1]-self.H//2)
+            text_pos = (self.center[0], self.center[1]-self.H//2-15)
 
         self.IDtext = self.canvas.create_text(text_pos, text = self.text)
         self.allIDs = [self.ID, self.IDtext]

@@ -6,7 +6,12 @@ import os
 
 from aia.NENV import init_node_env
 
+
 def run():
+
+    def update():
+        aiacanvas.after_idle(update)
+
     os.environ['AIA_MODE'] = 'gui'
     init_node_env()
 
@@ -19,9 +24,11 @@ def run():
     cell = ReadImage(aiacanvas, num_inp=0, num_out=1, view = "button", W = 200, H = 50)
     cell = ReadImageClone(aiacanvas, num_inp=0, num_out=1, view = "button", W = 200, H = 50)
 
-    cell = ShowImage(aiacanvas, num_inp=1, num_out=1, view = "image", W = 400, H = 300)
+    cell = ShowImage(aiacanvas, num_inp=2, num_out=1, view = "image", W = 400, H = 300)
 
     aiacanvas.pack()
+
+    root.after(20, update)
     root.mainloop()
     
     print("----------------------------------------")
