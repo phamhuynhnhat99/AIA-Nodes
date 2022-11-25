@@ -29,4 +29,4 @@ class CellLine():
             self.x2, self.y2 = self.v_cell.cellvalueinputs[self.IDc].center
 
         self.canvas.coords(self.ID, self.x1, self.y1, self.x2, self.y2)
-        self.canvas.after(20, self.update)
+        self.canvas.after(10, self.update)

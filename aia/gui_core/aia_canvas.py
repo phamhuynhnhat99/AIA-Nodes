@@ -17,6 +17,5 @@ class AIACanvas(tk.Canvas):
         if self.u.global_id != self.v.global_id:
             self.v.cellinputs[self.IDc] = self.u
             self.line = CellLine(self, self.u, self.v) # create new line from u to v
-            print(self.line.ID)
 
         self.v.update()

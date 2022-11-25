@@ -10,10 +10,9 @@ class ImageNodeBase(Node):
 
     
     def get_image_from_str_or_img(self, img):
-
         if str(type(img)) == "<class 'str'>":
             image = Image.open(img)
-        elif str(type(img)) == "<class 'PIL.PngImagePlugin.PngImageFile'>":
+        elif str(type(img)) == "<class 'PIL.Image.Image'>":
             image = img
         else:
             image = Image.open("/home/aia/Nhat/AIA-Nodes/aia.png")

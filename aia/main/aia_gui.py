@@ -23,9 +23,9 @@ def run():
     cell = ReadImage(aiacanvas, num_inp=0, num_out=1, view = "button", W = 200, H = 50)
     cell = ReadImageClone(aiacanvas, num_inp=0, num_out=1, view = "button", W = 200, H = 50)
     cell = BlurImage(aiacanvas, num_inp=1, num_out=1, view="rectangle", W=200, H=50)
-    cell = ShowImage(aiacanvas, num_inp=1, num_out=1, view = "image", W = 400, H = 300)
-    cell = ShowImage(aiacanvas, num_inp=1, num_out=1, view = "image", W = 400, H = 300)
-    cell = ShowImage(aiacanvas, num_inp=1, num_out=1, view = "image", W = 400, H = 300)
+    cell = ShowImage(aiacanvas, num_inp=1, num_out=1, view = "image", W = 300, H = 200)
+    cell = ShowImage(aiacanvas, num_inp=1, num_out=1, view = "image", W = 400, H = 200)
+    cell = ShowImage(aiacanvas, num_inp=1, num_out=1, view = "image", W = 500, H = 200)
 
     aiacanvas.pack()
     root.mainloop()
