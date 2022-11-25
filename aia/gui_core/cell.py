@@ -39,7 +39,25 @@ class Cell:
 
 
     def create(self):
-        if self.view == "button":
+        if self.view == "image":
+            #Load an image in the script
+            self.current_img = Image.open("/home/aia/Nhat/AIA-Nodes/aia.png")
+            w, h = self.current_img.size
+            scale = (self.W if self.W < self.H else self.H)/ (w if w > h else h)
+            new_w, new_h = int(scale * w), int(scale * h)
+            new_size = (new_w, new_h)
+
+            self.current_img = ImageTk.PhotoImage(self.current_img.resize(new_size))
+            
+            self.ID = self.canvas.create_image(
+                self.center[0],
+                self.center[1],
+                anchor="center",
+                image = self.current_img)
+            self.need_center = False
+            text_pos = (self.center[0], self.center[1]-self.H//2-15)
+            
+        else:
             self.ID = self.canvas.create_rectangle(
                 (self.center[0]-self.W*0.5, self.center[1]-self.H*0.5),
                 (self.center[0]+self.W*0.5, self.center[1]+self.H*0.5),
@@ -48,22 +66,6 @@ class Cell:
                 fill = self.FILL)
             self.need_center = True
             text_pos = (self.center[0], self.center[1])
-        else:
-            #Load an image in the script
-            self.img = Image.open("/home/aia/Nhat/AIA-Nodes/aia.png")
-            w, h = self.img.size
-            scale = (self.W if self.W < self.H else self.H)/ (w if w > h else h)
-            new_w, new_h = int(scale * w), int(scale * h)
-            new_size = (new_w, new_h)
-            self.img = ImageTk.PhotoImage(self.img.resize(new_size))
-            
-            self.ID = self.canvas.create_image(
-                self.center[0],
-                self.center[1],
-                anchor="center",
-                image = self.img)
-            self.need_center = False
-            text_pos = (self.center[0], self.center[1]-self.H//2-15)
 
         self.IDtext = self.canvas.create_text(text_pos, text = self.text)
         self.allIDs = [self.ID, self.IDtext]

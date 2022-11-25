@@ -1,3 +1,5 @@
+from tkinter import LAST as tk_arrow
+
 class CellLine():
 
     def __init__(self, canvas, u_cell, v_cell):
@@ -10,20 +12,21 @@ class CellLine():
         
 
     def create(self):
+        self.u_cell.line = self
+
         self.x1, self.y1 = self.u_cell.cellvalueoutput_.center
         self.x2, self.y2 = self.v_cell.cellvalueinputs[self.canvas.IDc].center
         
         self.v_cell.celllineinputs[self.canvas.IDc] = self
 
-        x1, y1, x2, y2 = self.x1, self.y1, self.x2, self.y2
-
-        self.ID = self.canvas.create_line(x1, y1, x2, y2, dash=(1, 2))
+        self.ID = self.canvas.create_line(self.x1, self.y1, self.x2, self.y2, dash=(16, 9), fill="blue") #, arrow=tk_arrow)
         self.canvas.tag_lower(self.ID)
         
     
     def update(self):
         self.x1, self.y1 = self.u_cell.cellvalueoutput_.center
-        self.x2, self.y2 = self.v_cell.cellvalueinputs[self.IDc].center
+        if self.IDc in self.v_cell.cellvalueinputs.keys():
+            self.x2, self.y2 = self.v_cell.cellvalueinputs[self.IDc].center
 
         self.canvas.coords(self.ID, self.x1, self.y1, self.x2, self.y2)
-        self.canvas.after(10, self.update)
+        self.canvas.after(20, self.update)

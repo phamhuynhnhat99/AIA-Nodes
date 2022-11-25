@@ -10,7 +10,7 @@ class CellValue:
         self.update()
         self.signal = False
 
-    def getpos(self,center = True):
+    def getpos(self, center = True):
         if center == True:
             self.cords = self.canvas.coords(self.ID)
             return (self.cords[0]+self.cords[2])/2, (self.cords[1]+self.cords[3])/2
@@ -31,9 +31,9 @@ class CellValue:
 
         try:
             if self.signal == False:
-                self.canvas.itemconfigure(self.ID, fill = '#d184d1')
+                self.canvas.itemconfigure(self.ID, fill = 'red')
             else:
-                self.canvas.itemconfigure(self.ID, fill = '#cc0ccc')
+                self.canvas.itemconfigure(self.ID, fill = 'green')
         except:
             None
         self.canvas.after(10, self.update)

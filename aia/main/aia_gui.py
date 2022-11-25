@@ -9,13 +9,12 @@ from aia.NENV import init_node_env
 
 def run():
 
-    def update():
-        aiacanvas.after_idle(update)
+    global cell
 
     os.environ['AIA_MODE'] = 'gui'
     init_node_env()
 
-    from aia.main.gui_nodes.opencv.opencv_nodes import ReadImage, ReadImageClone, ShowImage
+    from aia.main.gui_nodes.image.image_nodes import ReadImage, ReadImageClone, ShowImage, BlurImage
 
     root = tkinter.Tk()
     root.title('AIA-Nodes')
@@ -23,12 +22,12 @@ def run():
 
     cell = ReadImage(aiacanvas, num_inp=0, num_out=1, view = "button", W = 200, H = 50)
     cell = ReadImageClone(aiacanvas, num_inp=0, num_out=1, view = "button", W = 200, H = 50)
-
-    cell = ShowImage(aiacanvas, num_inp=2, num_out=1, view = "image", W = 400, H = 300)
+    cell = BlurImage(aiacanvas, num_inp=1, num_out=1, view="rectangle", W=200, H=50)
+    cell = ShowImage(aiacanvas, num_inp=1, num_out=1, view = "image", W = 400, H = 300)
+    cell = ShowImage(aiacanvas, num_inp=1, num_out=1, view = "image", W = 400, H = 300)
+    cell = ShowImage(aiacanvas, num_inp=1, num_out=1, view = "image", W = 400, H = 300)
 
     aiacanvas.pack()
-
-    root.after(20, update)
     root.mainloop()
     
     print("----------------------------------------")
