@@ -4,7 +4,25 @@ from .cell_line import CellLine
 class AIACanvas(tk.Canvas):
 
     def __init__(self, master, W = 1600, H = 900):
-        super().__init__(master, width = W, height = H)
+        super().__init__(master)
+
+        self.yscrollbar = tk.Scrollbar(master, orient = tk.VERTICAL)
+        self.yscrollbar.pack(side = tk.RIGHT, fill = tk.Y)
+ 
+        self.xscrollbar = tk.Scrollbar(master, orient = tk.HORIZONTAL)
+        self.xscrollbar.pack(side = tk.BOTTOM, fill = tk.X)
+
+        self.config(
+            width=W,
+            height=H,
+            scrollregion=(0, 0, 5000, 5000),
+            xscrollcommand = self.xscrollbar.set,
+            yscrollcommand = self.yscrollbar.set,
+            background='#b3aa97')
+        
+        self.yscrollbar.config(command = self.yview)
+        self.xscrollbar.config(command = self.xview)
+
 
         self.u = None
         self.v = None

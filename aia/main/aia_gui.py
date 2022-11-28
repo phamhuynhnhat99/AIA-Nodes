@@ -4,32 +4,42 @@ from aia.gui_core.aia_canvas import AIACanvas
 
 import os
 
-from aia.NENV import init_node_env
+from aia.NENV import init_node_env, import_widgets
+utils = import_widgets(__file__, "gui_utils.py")
 
+global node
 
 def run():
 
-    global cell
+    def node_clicked(_):
+        return lambda: create_new_node(_)
+
+    def create_new_node(_):
+        cell = gui_utils.gui_nodes[_](aiacanvas)
+
 
     os.environ['AIA_MODE'] = 'gui'
     init_node_env()
 
-    from aia.main.gui_nodes.image.image_nodes import ReadImage, ShowImage, BlurImage, RemoveBackground
+    gui_utils = utils.GUI_utils()
+    gui_utils.auto_loading()
 
     root = tkinter.Tk()
     root.title('AIA-Nodes')
     aiacanvas = AIACanvas(root)
-    aiacanvas.configure(background='#b3aa97')
 
-    cell = ReadImage(aiacanvas, num_inp=0, num_out=1, view = "button", W = 150, H = 60)
-    cell = ReadImage(aiacanvas, num_inp=0, num_out=1, view = "button", W = 150, H = 60)
-
-    cell = BlurImage(aiacanvas, num_inp=1, num_out=1, view="rectangle", W=200, H=50)
-
-    cell = ShowImage(aiacanvas, num_inp=1, num_out=1, view = "image", W = 400, H = 300)
-    cell = ShowImage(aiacanvas, num_inp=1, num_out=1, view = "image", W = 400, H = 300)
     
-    cell = RemoveBackground(aiacanvas, num_inp=1, num_out=1, view = "button", W = 200, H = 50)
+    for _, gui_node in enumerate(gui_utils.gui_nodes):
+        node = gui_node
+        button = tkinter.Button(aiacanvas, text = gui_node.title, command = node_clicked(_), anchor = "center")
+        button.configure(width = 15, activebackground = "#ff00ee", relief = tkinter.FLAT)
+        button.pack(side = tkinter.TOP)
+
+        ID = aiacanvas.create_window(
+            100,
+            50+_*50,
+            anchor="center",
+            window=button)
 
     aiacanvas.pack()
     root.mainloop()

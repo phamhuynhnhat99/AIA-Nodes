@@ -9,13 +9,13 @@ class CellOp(Cell):
             self.num_inp = 0
         self.num_out = num_out
 
-        center = (W, H)
+        center = (800, 200)
         super().__init__(canvas=canvas, view=view,  W=W, H=H, text=text, center=center)
         self.text = text
         self.canvas = canvas
         self.celllineinputs = dict()
 
-        self.cellvalueoutput_ = CellValue(canvas, r=10, center=(1.5*W, H))
+        self.cellvalueoutput_ = CellValue(canvas, r=10, center=(center[0]+0.5*W, center[1]))
         if num_inp == 0:
             self.cellvalueoutput_.value = self.get_output()
         self.celloutput_ = None
@@ -26,7 +26,7 @@ class CellOp(Cell):
         if self.num_inp > 0:
             space = int(H/(num_inp+1))
             for _ in range(self.num_inp):
-                self.cellvalueinputs[_] = CellValue(canvas, r=10, center=(0.5*W, 0.5*H + (_+1)*space))
+                self.cellvalueinputs[_] = CellValue(canvas, r=10, center=(center[0]-0.5*W, center[1]-0.5*H + (_+1)*space))
                 
         IDs = [self.cellvalueoutput_.ID]
         for cellvalueinput in self.cellvalueinputs.values():

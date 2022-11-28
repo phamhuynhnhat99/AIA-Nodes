@@ -12,7 +12,7 @@ class CellCtr:
 
 
 from tkinter import *
-from PIL import Image, ImageTk
+from PIL import ImageTk
 
 
 class Cell:
@@ -20,11 +20,6 @@ class Cell:
     _global_id_ctr = CellCtr()
 
     def __init__(self, canvas, view = None, W=100, H=50, outline = 'white', linew = 3, fill = 'grey', center = (100, 50), text = ''):
-        
-        self.default_image_path = "/home/aia/Nhat/AIA-Nodes/aia.png"
-        self.file_path = self.default_image_path
-        self.default_image = Image.open(self.default_image_path)
-        self.current_img = self.default_image
 
         self.global_id = self._global_id_ctr.increasing()
 
@@ -43,20 +38,6 @@ class Cell:
 
 
     def create(self):
-
-        # def select_file():
-        #     filetypes = (
-        #         ('All files', '*.*'),
-        #         ('jpg files', '*.jpg'),
-        #         ('png files', '*.png'),
-        #     )
-        #     self.file_path = filedialog.askopenfilename(
-        #         title='Choose a file',
-        #         initialdir='/home/',
-        #         filetypes=filetypes)
-        #     if not self.file_path:
-        #         self.file_path = self.default_image_path
-        #     self.update()
 
         if self.view == "image":
             #Load an image in the script
@@ -112,10 +93,10 @@ class Cell:
 
     def bind_all_to_movement(self):
         for id_ in self.auxlist:
-            self.canvas.tag_bind(id_, '<B1-Motion>', self.mouse_mov)
+            self.canvas.tag_bind(id_, '<B1-Motion>', self.mouse_move)
     
 
-    def mouse_mov(self, event):
+    def mouse_move(self, event):
         self.x, self.y = self.getpos()
         self.xmove = event.x - self.x
         self.ymove = event.y - self.y

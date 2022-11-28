@@ -10,8 +10,12 @@ from tkinter import filedialog
 class ImageNodeBase(Node):
 
     def __init__(self, canvas, num_inp=0, num_out=1, view = "", text="Image", W=50, H=50):
+        self.default_image_path = "/home/aia/Nhat/AIA-Nodes/aia.png"
+        self.file_path = self.default_image_path
+        self.default_image = Image.open(self.default_image_path)
+        self.current_img = self.default_image
         super().__init__(canvas, num_inp, num_out, view, text, W, H)
-
+        
     
     def valid_image(self, img):
         if img == None or img == 0:
@@ -35,7 +39,7 @@ class ImageNodeBase(Node):
 class ReadImage(ImageNodeBase):
     title = "Read Image"
 
-    def __init__(self, canvas, num_inp=0, num_out=1, view = "", W=50, H=50):
+    def __init__(self, canvas, num_inp=0, num_out=1, view = "button", W=150, H=60):
         self.button_width = 7
         super().__init__(canvas, num_inp, num_out, view, __class__.title, W, H)
 
@@ -68,17 +72,13 @@ class ReadImage(ImageNodeBase):
 class ShowImage(ImageNodeBase):
     title = "Show Image"
 
-    def __init__(self, canvas, num_inp=1, num_out=1, view = "", W=50, H=50):
+    def __init__(self, canvas, num_inp=1, num_out=1, view = "image", W=300, H=200):
         super().__init__(canvas, num_inp, num_out, view, __class__.title, W, H)
 
     
     def get_update_time(self):
 
         img = self.cellvalueoutput_.value
-
-        if img is None or img == 0:
-            img = self.default_image
-
         w, h = img.size
         scale = (self.W if self.W < self.H else self.H) / (w if w > h else h)
         new_w, new_h = int(scale * w), int(scale * h)
@@ -102,7 +102,7 @@ class ShowImage(ImageNodeBase):
 class BlurImage(ImageNodeBase):
     title = "Blur Image"
 
-    def __init__(self, canvas, num_inp=1, num_out=1, view = "", W=50, H=50):
+    def __init__(self, canvas, num_inp=1, num_out=1, view = "rectangle", W=200, H=50):
         super().__init__(canvas, num_inp, num_out, view, __class__.title, W, H)
 
     
@@ -126,7 +126,7 @@ class RemoveBackground(ImageNodeBase):
 
     api = 'https://118.69.190.178:5000/remove'
 
-    def __init__(self, canvas, num_inp=0, num_out=1, view = "", W=50, H=50):
+    def __init__(self, canvas, num_inp=1, num_out=1, view = "button", W=200, H=50):
         self.button_width = 17
         super().__init__(canvas, num_inp, num_out, view, __class__.title, W, H)
 
@@ -157,8 +157,16 @@ class RemoveBackground(ImageNodeBase):
     
     def get_update_time(self):
         # do Sth
-        return 5000
+        return 1000
 
 
     def get_image(self):
         return self.current_img
+
+
+export_nodes = [
+    ReadImage,
+    ShowImage,
+    BlurImage,
+    RemoveBackground
+]
