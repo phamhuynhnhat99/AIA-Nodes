@@ -6,10 +6,14 @@ class AIACanvas(tk.Canvas):
     def __init__(self, master, W = 1600, H = 900):
         super().__init__(master)
 
-        self.yscrollbar = tk.Scrollbar(master, orient = tk.VERTICAL)
+        self.xscrollbar_max = 5000
+        self.yscrollbar_max = 5000
+        self.scrollbar_width = 20
+
+        self.yscrollbar = tk.Scrollbar(master, orient = tk.VERTICAL, width=self.scrollbar_width)
         self.yscrollbar.pack(side = tk.RIGHT, fill = tk.Y)
  
-        self.xscrollbar = tk.Scrollbar(master, orient = tk.HORIZONTAL)
+        self.xscrollbar = tk.Scrollbar(master, orient = tk.HORIZONTAL, width=self.scrollbar_width)
         self.xscrollbar.pack(side = tk.BOTTOM, fill = tk.X)
 
         self.config(
@@ -20,9 +24,8 @@ class AIACanvas(tk.Canvas):
             yscrollcommand = self.yscrollbar.set,
             background='#b3aa97')
         
-        self.yscrollbar.config(command = self.yview)
         self.xscrollbar.config(command = self.xview)
-
+        self.yscrollbar.config(command = self.yview)
 
         self.u = None
         self.v = None
