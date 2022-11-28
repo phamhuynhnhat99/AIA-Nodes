@@ -38,8 +38,8 @@ class CellOp(Cell):
 
     def bindtoclick(self):
         for _, cellvalueinput in self.cellvalueinputs.items():
-            self.canvas.tag_bind(cellvalueinput.ID, '<1>', self.is_v_cell(_))
-        self.canvas.tag_bind(self.cellvalueoutput_.ID, '<1>', self.is_u_cell())
+            self.canvas.tag_bind(cellvalueinput.ID, '<Button-1>', self.is_v_cell(_))
+        self.canvas.tag_bind(self.cellvalueoutput_.ID, '<Button-1>', self.is_u_cell())
 
     def is_v_cell(self, ind):
         return lambda event: self.b1_inputs(event, ind)
