@@ -1,8 +1,6 @@
 from .cell import Cell
 from .cell_value import CellValue
 
-from PIL import ImageTk
-
 class CellOp(Cell):
     def __init__(self, canvas, num_inp=0, num_out=1, view = "", text = '', W = 50, H = 50):
         if num_inp >= 0:
@@ -82,8 +80,5 @@ class CellOp(Cell):
 
     def update(self):
         self.cellvalueoutput_.value = self.get_output()
-        if self.view == "image":
-            self.current_img = ImageTk.PhotoImage(self.cellvalueoutput_.value)
-            self.canvas.itemconfig(self.ID, image=self.current_img)
-
-        self.canvas.after(1000, self.update)
+        ping = self.update_on_canvas()
+        self.canvas.after(ping, self.update)
