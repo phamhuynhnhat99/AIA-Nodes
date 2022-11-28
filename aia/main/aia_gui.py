@@ -23,12 +23,13 @@ def run():
 
     cell = ReadImage(aiacanvas, num_inp=0, num_out=1, view = "button", W = 150, H = 60)
     cell = ReadImage(aiacanvas, num_inp=0, num_out=1, view = "button", W = 150, H = 60)
+
     cell = BlurImage(aiacanvas, num_inp=1, num_out=1, view="rectangle", W=200, H=50)
-    cell = ShowImage(aiacanvas, num_inp=1, num_out=1, view = "image", W = 500, H = 400)
-    # cell = ShowImage(aiacanvas, num_inp=1, num_out=1, view = "image", W = 400, H = 300)
-    # cell = ShowImage(aiacanvas, num_inp=1, num_out=1, view = "image", W = 300, H = 200)
-    # cell = ShowImage(aiacanvas, num_inp=1, num_out=1, view = "image", W = 200, H = 100)
-    # cell = RemoveBackground(aiacanvas, num_inp=1, num_out=1, view = "rectangle", W = 200, H = 50)
+
+    cell = ShowImage(aiacanvas, num_inp=1, num_out=1, view = "image", W = 400, H = 300)
+    cell = ShowImage(aiacanvas, num_inp=1, num_out=1, view = "image", W = 400, H = 300)
+    
+    cell = RemoveBackground(aiacanvas, num_inp=1, num_out=1, view = "button", W = 200, H = 50)
 
     aiacanvas.pack()
     root.mainloop()

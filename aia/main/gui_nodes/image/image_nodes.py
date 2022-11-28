@@ -13,8 +13,8 @@ class ImageNodeBase(Node):
         super().__init__(canvas, num_inp, num_out, view, text, W, H)
 
     
-    def image_or_default(self, img):
-        if img == None:
+    def valid_image(self, img):
+        if img == None or img == 0:
             image = self.default_image
         else:
             image = img
@@ -36,6 +36,7 @@ class ReadImage(ImageNodeBase):
     title = "Read Image"
 
     def __init__(self, canvas, num_inp=0, num_out=1, view = "", W=50, H=50):
+        self.button_width = 7
         super().__init__(canvas, num_inp, num_out, view, __class__.title, W, H)
 
     
@@ -91,9 +92,9 @@ class ShowImage(ImageNodeBase):
 
     def get_image(self):
         if 0 in self.cellinputs.keys():
-            img = self.image_or_default(self.cellinputs[0].cellvalueoutput_.value)
+            img = self.valid_image(self.cellinputs[0].cellvalueoutput_.value)
         else:
-            img = self.image_or_default(None)
+            img = self.default_image
 
         return img
 
@@ -112,10 +113,10 @@ class BlurImage(ImageNodeBase):
 
     def get_image(self):
         if 0 in self.cellinputs.keys():
-            img = self.image_or_default(self.cellinputs[0].cellvalueoutput_.value)
+            img = self.valid_image(self.cellinputs[0].cellvalueoutput_.value)
             img = img.filter(ImageFilter.BLUR)
         else:
-            img = self.image_or_default(None)
+            img = self.default_image
         return img
 
     
@@ -125,18 +126,14 @@ class RemoveBackground(ImageNodeBase):
 
     api = 'https://118.69.190.178:5000/remove'
 
-    def __init__(self, canvas, num_inp=1, num_out=1, view = "", W=50, H=50):
+    def __init__(self, canvas, num_inp=0, num_out=1, view = "", W=50, H=50):
+        self.button_width = 17
         super().__init__(canvas, num_inp, num_out, view, __class__.title, W, H)
 
     
-    def get_update_time(self):
-        # do Sth
-        return 10000
-
-
-    def get_image(self):
+    def button_clicked(self):
         if 0 in self.cellinputs.keys():
-            img = self.image_or_default(self.cellinputs[0].cellvalueoutput_.value)
+            img = self.valid_image(self.cellinputs[0].cellvalueoutput_.value)
             img_byte_arr = io.BytesIO()
             img.save(img_byte_arr, format='PNG')
             img_byte_arr = img_byte_arr.getvalue()
@@ -147,11 +144,21 @@ class RemoveBackground(ImageNodeBase):
             if response.status_code == 200:
                 try:
                     imageStream = io.BytesIO(response.content)
-                    img = Image.open(imageStream)
+                    self.current_img = Image.open(imageStream)
                 except requests.exceptions.RequestException:
                     print(response.text)
             else:
-                img = self.image_or_default(None)
+                self.current_img = self.default_image
         else:
-            img = self.image_or_default(None)
-        return img
+            self.current_img = self.default_image
+
+        self.update()
+
+    
+    def get_update_time(self):
+        # do Sth
+        return 5000
+
+
+    def get_image(self):
+        return self.current_img

@@ -22,8 +22,9 @@ class Cell:
     def __init__(self, canvas, view = None, W=100, H=50, outline = 'white', linew = 3, fill = 'grey', center = (100, 50), text = ''):
         
         self.default_image_path = "/home/aia/Nhat/AIA-Nodes/aia.png"
-        self.default_image = Image.open(self.default_image_path)
         self.file_path = self.default_image_path
+        self.default_image = Image.open(self.default_image_path)
+        self.current_img = self.default_image
 
         self.global_id = self._global_id_ctr.increasing()
 
@@ -59,7 +60,6 @@ class Cell:
 
         if self.view == "image":
             #Load an image in the script
-            self.current_img = self.default_image
             w, h = self.current_img.size
             scale = (self.W if self.W < self.H else self.H)/ (w if w > h else h)
             new_w, new_h = int(scale * w), int(scale * h)
@@ -76,7 +76,7 @@ class Cell:
 
         elif self.view == "button":
             self.button = Button(self.canvas, text = self.text, command = self.button_clicked, anchor = "center")
-            self.button.configure(width = 7, activebackground = "#33B5E5", relief = FLAT)
+            self.button.configure(width = self.button_width, activebackground = "#33B5E5", relief = FLAT)
             self.button.pack(side = TOP)
 
             self.ID = self.canvas.create_window(
