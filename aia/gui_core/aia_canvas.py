@@ -13,8 +13,7 @@ class AIACanvas(tk.Canvas):
         self.IDc = None
 
         # Create Scrollbar
-        self.xscrollbar_max = 5000
-        self.yscrollbar_max = 5000
+        self.xscrollbar_max, self.yscrollbar_max = 5000, 5000
         self.scrollbar_width = 20
 
         self.yscrollbar = tk.Scrollbar(master, orient = tk.VERTICAL, width=self.scrollbar_width)
@@ -24,15 +23,39 @@ class AIACanvas(tk.Canvas):
         self.xscrollbar.pack(side = tk.BOTTOM, fill = tk.X)
 
         self.config(
-            width=W,
-            height=H,
+            width=W, height=H,
             scrollregion=(0, 0, 5000, 5000),
             xscrollcommand = self.xscrollbar.set,
             yscrollcommand = self.yscrollbar.set,
-            background='#b3aa97')
+            background='#b3aa99')
         
         self.xscrollbar.config(command = self.xview)
         self.yscrollbar.config(command = self.yview)
+
+        # Root --- Arrow Key Detection
+        master.bind("<Up>", self.arrow_detected("Up"))
+        master.bind("<Left>", self.arrow_detected("Left"))
+        master.bind("<Down>", self.arrow_detected("Down"))
+        master.bind("<Right>", self.arrow_detected("Right"))
+
+
+    def arrow_detected(self, type):
+        def arrow_detected_lambda(event, type):
+            step = 0.002
+            scrollbar_x, scrollbar_y = (self.xscrollbar.get()[1] - 0.3202), (self.yscrollbar.get()[1] - 0.1802)
+            if type == "Up":
+                new_y = scrollbar_y - step if scrollbar_y - step >= 0.0 else 0.0
+                self.yview_moveto(str(new_y))
+            if type == "Left":
+                new_x = scrollbar_x - step if scrollbar_x - step >= 0.0 else 0.0
+                self.xview_moveto(str(new_x))
+            if type == "Down":
+                new_y = scrollbar_y + step if scrollbar_y + step <= 1.0 else 1.0
+                self.yview_moveto(str(new_y))
+            if type == "Right":
+                new_x = scrollbar_x + step if scrollbar_x + step <= 1.0 else 1.0
+                self.xview_moveto(str(new_x))
+        return lambda event: arrow_detected_lambda(event, type=type)
 
 
     def get_scrollbar_delta(self):

@@ -79,8 +79,9 @@ class Cell:
             text_pos = (self.center[0], self.center[1])
 
         self.IDtext = self.canvas.create_text(text_pos, text = self.text)
-        self.allIDs = [self.ID, self.IDtext]
-        self.auxlist = [self.ID, self.IDtext]
+
+        self.allIDs = [self.ID, self.IDtext] # and then, add CellValue ID to this object
+        self.auxlist = [self.ID, self.IDtext] # only ID and IDtext
     
 
     def getpos(self):

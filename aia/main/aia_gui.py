@@ -12,10 +12,9 @@ global node
 def run():
 
     def node_clicked(_):
-        return lambda: create_new_node(_)
-
-    def create_new_node(_):
-        cell = gui_utils.gui_nodes[_](aiacanvas)
+        def node_clicked_lambda(_):
+            cell = gui_utils.gui_nodes[_](aiacanvas)
+        return lambda: node_clicked_lambda(_)
 
 
     os.environ['AIA_MODE'] = 'gui'
@@ -26,9 +25,9 @@ def run():
 
     root = tkinter.Tk()
     root.title('AIA-Nodes')
+
     aiacanvas = AIACanvas(root)
 
-    
     for _, gui_node in enumerate(gui_utils.gui_nodes):
         button = tkinter.Button(aiacanvas, text = gui_node.title, command = node_clicked(_), anchor = "center")
         button.configure(width = 15, activebackground = "#ff00ee", relief = tkinter.FLAT)
