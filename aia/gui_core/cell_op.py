@@ -9,7 +9,11 @@ class CellOp(Cell):
             self.num_inp = 0
         self.num_out = num_out
 
-        center = (800, 200)
+        scrollbar_x, scrollbar_y = canvas.get_scrollbar_delta()
+        center_w, center_h = 800 + scrollbar_x, 450 + scrollbar_y
+        center = (center_w, center_h)
+
+
         super().__init__(canvas=canvas, view=view,  W=W, H=H, text=text, center=center)
         self.text = text
         self.canvas = canvas

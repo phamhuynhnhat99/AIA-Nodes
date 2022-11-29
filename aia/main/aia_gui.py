@@ -30,7 +30,6 @@ def run():
 
     
     for _, gui_node in enumerate(gui_utils.gui_nodes):
-        node = gui_node
         button = tkinter.Button(aiacanvas, text = gui_node.title, command = node_clicked(_), anchor = "center")
         button.configure(width = 15, activebackground = "#ff00ee", relief = tkinter.FLAT)
         button.pack(side = tkinter.TOP)
