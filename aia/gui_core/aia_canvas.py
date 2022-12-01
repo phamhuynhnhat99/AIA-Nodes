@@ -24,6 +24,7 @@ class AIACanvas(tk.Canvas):
 
         self.w = W
         self.h = H
+        self.menu_w = 200
 
         super().__init__(master)
         self.grid(row=0, column=2)

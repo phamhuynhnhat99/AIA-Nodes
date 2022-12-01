@@ -1,40 +1,31 @@
-import tkinter as tk
-from tkinter import ttk
 
-root = tk.Tk()
-root.title('Root Window')
-root.attributes('-alpha', 1)
-root.iconbitmap('arrow_ico.ico')
-
-screen_width = root.winfo_screenwidth()
-screen_height = root.winfo_screenheight()
-
-width = 500
-height = 500
-
-offset_x = int(screen_width/2 - width/2)
-offset_y = int(screen_height/2 - height/2)
-
-root.geometry(f'{width}x{height}+{offset_x}+{offset_y}')
-root.minsize(200, 200)
-root.maxsize(600, 600)
-
-def func1():
-    print(toplevel.title())
-    # root.lift()
-    # root.iconify()
-    toplevel.withdraw()
-
-
-def func2():
-    toplevel.iconify()
-
-toplevel = tk.Toplevel()
-toplevel.title('Top level Window')
-top_btn = ttk.Button(root, text='top btn', command=func1)
-top_btn.grid(row=0, column=0)
-top_btn1 = ttk.Button(root, text='top btn1', command=func2)
-top_btn1.grid(row=0, column=1)
-root.after(5000, lambda: top_btn.lift())
-
-root.mainloop()
+# Python program to bind all
+# the number keys in Tkinter
+  
+# Import the library Tkinter
+from tkinter import *
+  
+# Create a GUI app
+app = Tk()
+  
+# Set the title and geometry of the app
+app.title('Bind Number Keys')
+app.geometry("800x400")
+  
+# Make a function to display a message
+# whenever user presses 0-9 key
+def key_press(event):
+    print(type(event.keysym_num))
+    Label(app, text="You pressed: " + str(event.keysym_num), 
+          font='Helvetica 18 bold').pack()
+  
+# Create a label widget to display the text
+label = Label(app, text="Press any key in between range 0-9")
+label.pack(pady=25)
+label.config(font='Arial 20 bold')
+  
+# Bind all the number keys with the callback function
+app.bind("<KeyPress>", key_press)
+  
+# Make infinite loop for displaying app on the screen
+app.mainloop()

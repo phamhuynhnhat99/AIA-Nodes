@@ -100,8 +100,8 @@ class Cell:
     def mouse_move(self, event):
         self.x, self.y = self.getpos()
         scrollbar_x, scrollbar_y = self.canvas.get_scrollbar_delta()
-        self.xmove = event.x - self.x + scrollbar_x
+        self.xmove = event.x - self.x + scrollbar_x + self.canvas.menu_w
         self.ymove = event.y - self.y + scrollbar_y
         for id_ in self.allIDs:
-            self.canvas.move(id_, self.xmove, self.ymove)    
+            self.canvas.move(id_, self.xmove, self.ymove)
     

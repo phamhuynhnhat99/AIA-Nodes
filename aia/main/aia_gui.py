@@ -27,7 +27,6 @@ def run():
     root = tk.Tk()
     root.geometry("1643x922")
     root.title('AIA-Nodes')
-    root.resizable(True, True)
 
     aiacanvas = AIACanvas(root)
 
