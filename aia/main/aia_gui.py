@@ -40,7 +40,7 @@ def run():
 
         ID = menu.create_window(
             100,
-            50+_*50,
+            40+_*50,
             anchor="center",
             window=button)
 
