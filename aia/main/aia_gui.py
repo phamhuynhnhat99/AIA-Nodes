@@ -1,6 +1,7 @@
-import tkinter
+import tkinter as tk
+from tkinter import ttk
 
-from aia.gui_core.aia_canvas import AIACanvas
+from aia.gui_core.aia_canvas import AIACanvas, MenuCanvas
 
 import os
 
@@ -23,23 +24,26 @@ def run():
     gui_utils = utils.GUI_utils()
     gui_utils.auto_loading()
 
-    root = tkinter.Tk()
+    root = tk.Tk()
+    root.geometry("1643x922")
     root.title('AIA-Nodes')
+    root.resizable(True, True)
 
     aiacanvas = AIACanvas(root)
 
-    for _, gui_node in enumerate(gui_utils.gui_nodes):
-        button = tkinter.Button(aiacanvas, text = gui_node.title, command = node_clicked(_), anchor = "center")
-        button.configure(width = 15, activebackground = "#ff00ee", relief = tkinter.FLAT)
-        button.pack(side = tkinter.TOP)
+    menu = MenuCanvas(root)
 
-        ID = aiacanvas.create_window(
+    for _, gui_node in enumerate(gui_utils.gui_nodes):
+        button = tk.Button(menu, text = gui_node.title, command = node_clicked(_), anchor = "center")
+        button.configure(bd = 2, width = 15, activebackground = "#ff00ee", relief = tk.FLAT)
+        button.grid()
+
+        ID = menu.create_window(
             100,
             50+_*50,
             anchor="center",
             window=button)
 
-    aiacanvas.pack()
     root.mainloop()
     
     print("----------------------------------------")

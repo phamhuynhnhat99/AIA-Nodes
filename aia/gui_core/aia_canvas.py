@@ -1,26 +1,41 @@
 import tkinter as tk
 from .cell_line import CellLine
 
+
+class MenuCanvas(tk.Canvas):
+
+    def __init__(self, master, W = 200, H = 900):
+        super().__init__(master)
+        self.grid(row=0, column=0)
+
+        self.yscrollbar = tk.Scrollbar(master, orient = tk.VERTICAL, command = self.yview, width=20)
+        self.yscrollbar.grid(row=0, column=1, sticky='ns')
+
+        self.config(
+            width=W, height=H,
+            scrollregion=(0, 0, 5000, 5000),
+            yscrollcommand = self.yscrollbar.set,
+            background='#32a852')
+
+
 class AIACanvas(tk.Canvas):
 
-    def __init__(self, master, W = 1600, H = 900):
-        super().__init__(master)
+    def __init__(self, master, W = 1400, H = 900):
 
-        self.u = None
-        self.v = None
-        self.clickcount_u = 0
-        self.clickcount_v = 0
-        self.IDc = None
+        self.w = W
+        self.h = H
+
+        super().__init__(master)
+        self.grid(row=0, column=2)
 
         # Create Scrollbar
         self.xscrollbar_max, self.yscrollbar_max = 5000, 5000
-        self.scrollbar_width = 20
 
-        self.yscrollbar = tk.Scrollbar(master, orient = tk.VERTICAL, width=self.scrollbar_width)
-        self.yscrollbar.pack(side = tk.RIGHT, fill = tk.Y)
+        self.yscrollbar = tk.Scrollbar(master, orient = tk.VERTICAL, command = self.yview, width=20)
+        self.yscrollbar.grid(row=0, column=3, sticky='ns')
  
-        self.xscrollbar = tk.Scrollbar(master, orient = tk.HORIZONTAL, width=self.scrollbar_width)
-        self.xscrollbar.pack(side = tk.BOTTOM, fill = tk.X)
+        self.xscrollbar = tk.Scrollbar(master, orient = tk.HORIZONTAL, command = self.xview, width=20)
+        self.xscrollbar.grid(row=1, column=2, sticky='ew')
 
         self.config(
             width=W, height=H,
@@ -28,15 +43,23 @@ class AIACanvas(tk.Canvas):
             xscrollcommand = self.xscrollbar.set,
             yscrollcommand = self.yscrollbar.set,
             background='#b3aa99')
-        
-        self.xscrollbar.config(command = self.xview)
-        self.yscrollbar.config(command = self.yview)
 
         # Root --- Arrow Key Detection
         master.bind("<Up>", self.arrow_detected("Up"))
         master.bind("<Left>", self.arrow_detected("Left"))
         master.bind("<Down>", self.arrow_detected("Down"))
         master.bind("<Right>", self.arrow_detected("Right"))
+
+        self.constructor()
+
+    
+
+    def constructor(self):
+        self.u = None
+        self.v = None
+        self.clickcount_u = 0
+        self.clickcount_v = 0
+        self.IDc = None
 
 
     def arrow_detected(self, type):

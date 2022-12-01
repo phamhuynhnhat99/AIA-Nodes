@@ -1,31 +1,40 @@
 import tkinter as tk
- 
- 
-class MainWindow:
-    def __init__(self, master):
-        self.master = master
- 
-        self.frame = tk.Frame(self.master)
-        self.frame.pack()
- 
-        self.label = tk.Label(self.frame, text = "ScrollBar Demo")
-        self.label.pack()
- 
-        self.yscrollbar = tk.Scrollbar(self.frame, orient = tk.VERTICAL)
-        self.yscrollbar.pack(side = tk.RIGHT, fill = tk.Y)
- 
-        self.xscrollbar = tk.Scrollbar(self.frame, orient = tk.HORIZONTAL)
-        self.xscrollbar.pack(side = tk.BOTTOM, fill = tk.X)
- 
-        self.canvas = tk.Canvas(self.frame, width = 300, height = 300, scrollregion = (0, 0, 500, 500),
-                                xscrollcommand = self.xscrollbar.set, yscrollcommand = self.yscrollbar.set,
-                                bg = "white")
-        self.canvas.pack()
- 
-        self.yscrollbar.config(command = self.canvas.yview)
-        self.xscrollbar.config(command = self.canvas.xview)
-         
- 
+from tkinter import ttk
+
 root = tk.Tk()
-window = MainWindow(root)
+root.title('Root Window')
+root.attributes('-alpha', 1)
+root.iconbitmap('arrow_ico.ico')
+
+screen_width = root.winfo_screenwidth()
+screen_height = root.winfo_screenheight()
+
+width = 500
+height = 500
+
+offset_x = int(screen_width/2 - width/2)
+offset_y = int(screen_height/2 - height/2)
+
+root.geometry(f'{width}x{height}+{offset_x}+{offset_y}')
+root.minsize(200, 200)
+root.maxsize(600, 600)
+
+def func1():
+    print(toplevel.title())
+    # root.lift()
+    # root.iconify()
+    toplevel.withdraw()
+
+
+def func2():
+    toplevel.iconify()
+
+toplevel = tk.Toplevel()
+toplevel.title('Top level Window')
+top_btn = ttk.Button(root, text='top btn', command=func1)
+top_btn.grid(row=0, column=0)
+top_btn1 = ttk.Button(root, text='top btn1', command=func2)
+top_btn1.grid(row=0, column=1)
+root.after(5000, lambda: top_btn.lift())
+
 root.mainloop()
