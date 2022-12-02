@@ -40,6 +40,12 @@ class CellOp(Cell):
         self.bind_all_to_movement()
         self.bindtoclick()
 
+        def key_press_(event):
+            print(event.keysym_num)
+
+        for id_ in self.allIDs:
+            self.canvas.tag_bind(id_, "<KeyPress>", key_press_)
+
 
     def bindtoclick(self):
         for _, cellvalueinput in self.cellvalueinputs.items():
