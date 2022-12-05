@@ -23,9 +23,9 @@ def run():
 
     gui_utils = utils.GUI_utils()
     gui_utils.auto_loading()
+    print(len(gui_utils.gui_nodes))
 
     root = tk.Tk()
-    root.geometry("1643x922")
     root.title('AIA-Nodes')
 
     aiacanvas = AIACanvas(root)

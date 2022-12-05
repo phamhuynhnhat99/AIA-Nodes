@@ -31,5 +31,3 @@ def import_widgets(origin_file: str, rel_file_path='widgets.py'):
         widgets = None
     
     return widgets
-
-

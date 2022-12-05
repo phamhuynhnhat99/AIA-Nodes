@@ -8,6 +8,11 @@ class TextNodeBase(Node):
         super().__init__()
         self.output = None
 
+    
+    def get_output(self):
+        return self.get_text()
+
+
     def update_event(self):
         self.output = self.get_output()
         self.set_data_output(key="output", obj=self.output)
@@ -26,7 +31,7 @@ class FloatInput(TextNodeBase):
         self.title = tilte
 
     
-    def get_output(self):
+    def get_text(self):
 
         FloatInputWidget = widgets.FloatInputWidget()
         FloatInputWidget.set_title(self.title)

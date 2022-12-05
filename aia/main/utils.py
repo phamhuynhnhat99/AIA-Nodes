@@ -10,12 +10,12 @@ class Coordinator:
         self.flow = Flow()
 
         # all of nodes that may be used
-        self.auto_nodes = []
+        self.no_gui_nodes = []
 
         # all of directions
         self.arrows = []
 
-        # Contain nodes that are registered from self.auto_nodes
+        # Contain nodes that are registered from self.no_gui_nodes
         self.registered_nodes = dict() # key = gid, value = Node
 
         # Toposort Result
@@ -24,22 +24,27 @@ class Coordinator:
     
     def auto_loading(self):
         """ Load all of nodes that from aia.main.auto_loading folder """
-        auto_loading_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "auto_loading"))
+        auto_loading_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "no_gui_nodes"))
         auto_loading_nodes = os.listdir(auto_loading_path)
+        try:
+            auto_loading_nodes.remove("__pycache__")
+        except:
+            None
         for aln in auto_loading_nodes:
             aln_path = os.path.join(auto_loading_path, aln)
             sys.path.append(aln_path)
             aln_nodes = aln + "_nodes.py"
             nodes_py = os.path.join(aln_path, aln_nodes)
             try:
-                self.auto_nodes += __import__(os.path.basename(nodes_py)[:-3]).export_nodes
+                module_name = os.path.basename(nodes_py).split(".py")[0]
+                self.no_gui_nodes += __import__(module_name).export_nodes
             except:
                 continue
 
 
-    def display_auto_nodes(self):
+    def display_no_gui_nodes(self):
         print("-oOo-         All of nodes         -oOo-")
-        for i, node_class in enumerate(self.auto_nodes):
+        for i, node_class in enumerate(self.no_gui_nodes):
             print("    Index:", i, "   ", node_class.title)
 
     
@@ -71,27 +76,38 @@ class Coordinator:
         if gid in self.registered_nodes.keys():
             if self.order is not None: # Topo Existing
                 genealogy_of_u = self.flow.sub_toposort_from(gid)
-                for ver in genealogy_of_u:
-                    self.registered_nodes[ver].update_event()
+                for v in genealogy_of_u:
+                    self.registered_nodes[v].update_event()
 
 
-    def registering_a_new_node(self, node_index):
-        if 0 <= node_index and node_index < len(self.auto_nodes):
-            new_node = self.auto_nodes[node_index]()
+    def registering_a_new_node(self, ind):
+        if 0 <= ind and ind < len(self.no_gui_nodes):
+            new_node = self.no_gui_nodes[ind]()
             self.registered_nodes[new_node.global_id] = new_node
-            self.registered_nodes[new_node.global_id].update_event()
+            # self.registered_nodes[new_node.global_id].update_event()
             self.updating_toposort()
             
 
-    def registering_a_new_arrow(self, u, v):
+    def registering_a_new_arrow(self, u, v, ind):
         if u in self.registered_nodes.keys() and v in self.registered_nodes.keys():
-            if [u, v] not in self.arrows:
-                self.arrows.append([u, v])
-                self.registered_nodes[v].push_prev_nodes(self.registered_nodes[u])
 
-                self.updating_toposort()
-                # get vertex v's descendants and "update_event" all of them
-                self.updating_a_registered_node(v)
+            if ind in self.registered_nodes[v].nodeinputs.keys():
+                if self.registered_nodes[v].nodeinputs[ind] is not None:
+                    old_u = self.registered_nodes[v].nodeinputs[ind].global_id
+                    self.arrows.remove([old_u, v])
+                del self.registered_nodes[v].nodeinputs[ind]
+
+            if ind in self.registered_nodes[v].nodevalueinputs.keys():
+                del self.registered_nodes[v].nodevalueinputs[ind]
+
+            if u != v:
+                if [u, v] not in self.arrows:
+                    self.arrows.append([u, v])
+                    self.registered_nodes[v].nodeinputs[ind] = self.registered_nodes[u]
+
+                    self.updating_toposort()
+                    # get vertex v's descendants and "update_event()" all of them
+                    self.updating_a_registered_node(v)
 
 
     def removing_a_registered_node(self, gid):
@@ -103,9 +119,9 @@ class Coordinator:
             # get arrows that contain gid (vertex)
             sub_arrows = [arrow for arrow in self.arrows if gid in arrow]
             for arrow in sub_arrows:
-                u = arrow[0]
-                v = arrow[1]
-                self.registered_nodes[v].remove_prev_node(self.registered_nodes[u])
+                u = arrow[0] # u is gid or
+                v = arrow[1] # or v is gid
+                self.registered_nodes[v].remove_nodeinputs_and_its_value(self.registered_nodes[u])
                 self.arrows.remove(arrow)
 
             # Delete node
@@ -121,7 +137,7 @@ class Coordinator:
     def removing_a_registered_arrow(self, u, v):
         if [u, v] in self.arrows:
             self.arrows.remove([u, v])
-            self.registered_nodes[v].remove_prev_node(self.registered_nodes[u])
+            self.registered_nodes[v].remove_nodeinputs_and_its_value(self.registered_nodes[u])
 
             self.updating_toposort()
             # get vertex v's descendants and "update_event" all of them

@@ -1,31 +1,21 @@
-
-# Python program to bind all
-# the number keys in Tkinter
-  
-# Import the library Tkinter
+#Import the required libraries
 from tkinter import *
-  
-# Create a GUI app
-app = Tk()
-  
-# Set the title and geometry of the app
-app.title('Bind Number Keys')
-app.geometry("800x400")
-  
-# Make a function to display a message
-# whenever user presses 0-9 key
-def key_press(event):
-    print(type(event.keysym_num))
-    Label(app, text="You pressed: " + str(event.keysym_num), 
-          font='Helvetica 18 bold').pack()
-  
-# Create a label widget to display the text
-label = Label(app, text="Press any key in between range 0-9")
-label.pack(pady=25)
-label.config(font='Arial 20 bold')
-  
-# Bind all the number keys with the callback function
-app.bind("<KeyPress>", key_press)
-  
-# Make infinite loop for displaying app on the screen
-app.mainloop()
+
+#Create an instance of tkinter frame
+win= Tk()
+
+#Set the geometry of frame
+win.geometry("650x450")
+
+#Define a function for Button Object
+def quit_win():
+   win.quit()
+def destroy_win():
+   win.destroy()
+
+#Button for Quit Method
+Button(win,text="Quit", command=quit_win, font=('Helvetica bold',20)).pack(pady=5)
+
+#Button for Destroy Method
+Button(win, text= "Destroy", command=destroy_win, font=('Helvetica bold',20)).pack(pady=5)
+win.mainloop()

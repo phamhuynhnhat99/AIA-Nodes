@@ -11,13 +11,18 @@ class GUI_utils:
         """ Load all of nodes that from aia.main.auto_loading folder """
         auto_loading_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "gui_nodes"))
         auto_loading_nodes = os.listdir(auto_loading_path)
+        try:
+            auto_loading_nodes.remove("__pycache__")
+        except:
+            None
         for aln in auto_loading_nodes:
             aln_path = os.path.join(auto_loading_path, aln)
             sys.path.append(aln_path)
             aln_nodes = aln + "_nodes.py"
             nodes_py = os.path.join(aln_path, aln_nodes)
             try:
-                self.gui_nodes += __import__(os.path.basename(nodes_py)[:-3]).export_nodes
+                module_name = os.path.basename(nodes_py).split(".py")[0]
+                self.gui_nodes += __import__(module_name).export_nodes
             except:
                 continue
 

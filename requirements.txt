@@ -1,4 +1,0 @@
-matplotlib==3.6.2
-mtcnn==0.1.1
-opencv_python==4.6.0.66
-torch==1.13.0

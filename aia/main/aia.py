@@ -14,9 +14,9 @@ def run():
     
     """ Infinity Loop """
     while True:
-        os.system('clear')
+        # os.system('clear')
         print("----------------------------------------")
-        coordinator.display_auto_nodes()
+        coordinator.display_no_gui_nodes()
         print("----------------------------------------")
         print("-oOo-       Registered Nodes       -oOo-")
         coordinator.display_registered_nodes()
@@ -39,41 +39,42 @@ def run():
         if choice == "1":
             try:
                 ind = int(input("New node's index is: "))
-                coordinator.registering_a_new_node(ind)
             except:
-                continue
+                ind = -1 # out of list range
+            coordinator.registering_a_new_node(ind)
 
         elif choice == "2":
             arrow = input("Enter an arrow: ").split(" ")
             try:
                 u = int(arrow[0])
                 v = int(arrow[1])
-                coordinator.registering_a_new_arrow(u, v)
+                ind = int(arrow[2])
             except:
-                continue
+                u, v, ind = -1, -1, -1 # out of list range
+            coordinator.registering_a_new_arrow(u, v, ind)
 
         elif choice == "3":
             try:
                 gid = int(input("Node's Global ID is: "))
-                coordinator.updating_a_registered_node(gid)
             except:
-                continue
+                gid = -1
+            coordinator.updating_a_registered_node(gid)
         
         elif choice == "4":
             try:
                 gid = int(input("Node's Global ID is: "))
-                coordinator.removing_a_registered_node(gid)
             except:
-                continue
+                gid = -1
+            coordinator.removing_a_registered_node(gid)
 
         elif choice == "5":
             arrow = input("Enter an arrow: ").split(" ")
             try:
                 u = int(arrow[0])
                 v = int(arrow[1])
-                coordinator.removing_a_registered_arrow(u, v)
             except:
-                continue
+                u, v = -1, -1
+            coordinator.removing_a_registered_arrow(u, v)
 
         else:
             break

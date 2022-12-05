@@ -10,7 +10,7 @@ from tkinter import filedialog
 class ImageNodeBase(Node):
 
     def __init__(self, canvas, num_inp=0, num_out=1, view = "", text="Image", W=50, H=50):
-        self.default_image_path = "/home/aia/Nhat/AIA-Nodes/aia.png"
+        self.default_image_path = "aia.png"
         self.file_path = self.default_image_path
         self.default_image = Image.open(self.default_image_path)
         self.current_img = self.default_image

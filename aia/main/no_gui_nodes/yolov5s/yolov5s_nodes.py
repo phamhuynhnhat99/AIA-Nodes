@@ -9,8 +9,13 @@ class Yolov5sNodeBase(Node):
         super().__init__()
         self.image = None
 
+
+    def get_output(self):
+        return self.get_image()
+
+
     def update_event(self):
-        self.image, all_people = self.get_image()
+        self.image, all_people = self.get_output()
         self.set_data_output(key="image", obj=self.image)
         if all_people is not None:
             self.set_data_output(key="bounding boxes", obj=all_people)

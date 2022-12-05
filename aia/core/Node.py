@@ -3,87 +3,53 @@ from .Base import Base
 
 class Node(Base):
 
-    def __init__(self):
+    def __init__(self, num_inp=0, num_out=1, title=''):
         
         super().__init__()
 
-        self.title = ''
+        self.num_inp = num_inp
+        self.num_out = num_out
+        self.title = title
 
         self.version: str = None
 
-        self.data_inputs = list()
-        self.fake_inputs = list()
+        self.nodevalueoutput_ = dict()
+        if self.num_inp == 0:
+            self.nodevalueoutput_[0] = self.get_output()
+        self.nodeoutput_ = None
 
-        self.data_output = dict()
+        self.nodevalueinputs = dict()
+        self.nodeinputs = dict()
 
-        self.prev_nodes = list()
+        for ind in range(self.num_inp):
+            self.nodevalueinputs[ind] = None
+            self.nodeinputs[ind] = None
+        
 
-
-    # data_inputs
-    def update_data_inputs(self):
-        def copy_object(obj):
-            if str(type(obj)) == "<class 'list'>":
-                return obj.copy()
+    # nodevalueinputs
+    def update_nodevalueinputs(self):
+        self.nodevalueinputs = dict()
+        for ind, node in self.nodeinputs.items():
+            if node is not None:
+                value = node.nodevalueoutput_
+                self.nodevalueinputs[ind] = value
             else:
-                return obj
+                self.nodevalueinputs[ind] = None
 
-        self.data_inputs = list()
-        for node in self.prev_nodes:
-            copy_obj = copy_object(node.get_data_output("all"))
-            self.data_inputs.append(copy_obj)
-
-    def get_data_inputs(self, ind = -1):
-        self.update_data_inputs()
+    def get_nodevalueinputs(self, ind = -1):
         if ind == -1:
-            return self.data_inputs
-        elif ind < len(self.data_inputs):
-            return self.data_inputs[ind]
+            return self.nodevalueinputs
+        elif ind in self.nodevalueinputs.keys():
+            return self.nodevalueinputs[ind]
         return None
 
-    def set_fake_input(self, fake):
-        self.fake_inputs = fake
+    def remove_nodeinputs_and_its_value(self, node):
+        if node in self.nodeinputs.values():
+            ind = list(self.nodeinputs.values).index(node)
+            key = list(self.nodeinputs.keys)[ind]
+            del self.nodeinputs[key]
+            del self.nodevalueinputs[key]
 
-    def get_fake_input(self):
-        return self.fake_inputs
-
-
-    # data_output
-    def get_data_output(self, key = "all"):
-        if key == "all":
-            return self.data_output
-        elif key in self.data_output.keys():
-            return self.data_output[key]
-        return None
-
-    def set_data_output(self, key, obj):
-        self.data_output[key] = obj
-
-    
-    # prev_nodes
-    def get_prev_nodes(self, ind = -1):
-        if ind == -1: # get all
-            return self.prev_nodes
-        elif ind < len(self.prev_nodes):
-            return self.prev_nodes[ind]
-        return None
-    
-    def push_prev_nodes(self, prev_node):
-        self.prev_nodes.append(prev_node)
-    
-    def set_prev_nodes(self, ind, obj):
-        if ind == -1:
-            if str(type(obj)) == "<class 'list'>":
-                self.prev_nodes = obj
-            else:
-                self.prev_nodes = list()
-        elif ind < len(self.prev_nodes):
-            self.prev_nodes[ind] = obj
-
-    
-    def remove_prev_node(self, obj):
-        if obj in self.prev_nodes:
-            self.prev_nodes.remove(obj)
-            self.update_data_inputs()
 
 
 
@@ -92,8 +58,8 @@ class Node(Base):
         self.title = ''
         self.version: str = None
 
-        self.data_inputs = list()
+        self.nodevalueinputs = dict()
 
-        self.data_output = dict()
+        self.nodevalueoutput_ = dict()
 
-        self.prev_nodes = list()  # list of input nodes
+        self.nodeinputs = dict()

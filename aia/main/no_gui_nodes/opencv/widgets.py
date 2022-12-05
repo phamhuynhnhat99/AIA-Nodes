@@ -5,30 +5,30 @@ from tkinter import filedialog
 class ReadImageWidget():
 
     def __init__(self):
-        self.image_path = ''
+        self.image_path = 'aia.png'
 
     def get_image_path(self):
         
         def select_file():
             filetypes = (
-                ('jpg files', '*.jpg'),
                 ('png files', '*.png'),
+                ('jpg files', '*.jpg'),
                 ('All files', '*.*')
             )
 
             filename = filedialog.askopenfilename(
                 title='Open a file',
-                initialdir='/home/',
+                initialdir='/',
                 filetypes=filetypes)
             if filename:
-                root.destroy()
-                root.quit()
+                print(filename)
                 self.image_path = filename
+            root.quit()
         
         root = tk.Tk()
         root.title('CHOOSE AN IMAGE')
         root.resizable(False, False)
-        root.geometry('400x300')
+        root.geometry('200x100')
 
         open_button = ttk.Button(
             root,
