@@ -1,21 +1,12 @@
-#Import the required libraries
-from tkinter import *
+import tkinter as tk
 
-#Create an instance of tkinter frame
-win= Tk()
+def but_ex_1():
+    print("Will it be destroyed?")
+    root.destroy()
+    
+root = tk.Tk()
+tk.Label(root, text="This is a window.").pack()
+tk.Button(root, text="OK, go", command=but_ex_1).pack()
+root.mainloop()
 
-#Set the geometry of frame
-win.geometry("650x450")
-
-#Define a function for Button Object
-def quit_win():
-   win.quit()
-def destroy_win():
-   win.destroy()
-
-#Button for Quit Method
-Button(win,text="Quit", command=quit_win, font=('Helvetica bold',20)).pack(pady=5)
-
-#Button for Destroy Method
-Button(win, text= "Destroy", command=destroy_win, font=('Helvetica bold',20)).pack(pady=5)
-win.mainloop()
+print("It did/not???")

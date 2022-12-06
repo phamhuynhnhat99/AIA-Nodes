@@ -21,7 +21,6 @@ class FloatInputWidget():
                 float_text = None
             if float_text:
                 self.float_text = float_text
-                root.destroy()
                 root.quit()
             else:
                 Output.delete("1.0", END)

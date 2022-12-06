@@ -15,7 +15,7 @@ class TextNodeBase(Node):
 
     def update_event(self):
         self.output = self.get_output()
-        self.set_data_output(key="output", obj=self.output)
+        self.nodevalueoutput_[0] = self.output
 
 
 class FloatInput(TextNodeBase):

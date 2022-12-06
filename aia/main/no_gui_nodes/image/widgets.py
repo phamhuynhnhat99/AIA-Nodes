@@ -1,5 +1,4 @@
 import tkinter as tk
-from tkinter import ttk
 from tkinter import filedialog
 
 class ReadImageWidget():
@@ -21,7 +20,6 @@ class ReadImageWidget():
                 initialdir='/',
                 filetypes=filetypes)
             if filename:
-                print(filename)
                 self.image_path = filename
             root.quit()
         
@@ -30,13 +28,12 @@ class ReadImageWidget():
         root.resizable(False, False)
         root.geometry('200x100')
 
-        open_button = ttk.Button(
+        open_btn = tk.Button(
             root,
             text='Open a File',
             command=select_file
         )
-
-        open_button.pack(expand=True)
+        open_btn.pack(expand=True)
 
         root.mainloop()
 

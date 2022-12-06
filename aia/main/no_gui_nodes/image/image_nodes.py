@@ -2,12 +2,12 @@ from aia.NENV import *
 
 widgets = import_widgets(__file__)
 
-import cv2
+from PIL import Image, ImageFilter
 
-class Cv2NodeBase(Node):
+class ImageNodeBase(Node):
     def __init__(self, num_inp, num_out, title):
         super().__init__(num_inp=num_inp, num_out=num_out, title=title)
-        self.default_image = cv2.cvtColor(cv2.imread("aia.png"), cv2.IMREAD_COLOR)
+        self.default_image = Image.open("aia.png")
         self.image = self.default_image
 
     
@@ -20,8 +20,8 @@ class Cv2NodeBase(Node):
         self.nodevalueoutput_[0] = self.image
 
 
-class ReadImage(Cv2NodeBase):
-    title = "Read Image (OpenCV)"
+class ReadImage(ImageNodeBase):
+    title = "Read Image"
 
     def __init__(self, num_inp=0, num_out=1, title = title):
         super().__init__(num_inp, num_out, title)
@@ -29,12 +29,13 @@ class ReadImage(Cv2NodeBase):
     def get_image(self):
         readImageWidget = widgets.ReadImageWidget()
         image_path = readImageWidget.get_image_path()
-        image = cv2.cvtColor(cv2.imread(image_path), cv2.IMREAD_COLOR)
+        image = Image.open(image_path)
         return image
 
 
-class ShowImage(Cv2NodeBase):
-    title = "Show Image (OpenCV)"
+class SaveImage(ImageNodeBase):
+    title = "Save Image"
+    storage_folder = os.environ["STORAGE_FOLDER"]
 
     def __init__(self, num_inp=1, num_out=1, title = title):
         super().__init__(num_inp, num_out, title)
@@ -43,23 +44,45 @@ class ShowImage(Cv2NodeBase):
         self.update_nodevalueinputs()
         input = self.get_nodevalueinputs(ind=0)
         if input:
-            print(input)
             if 0 in input.keys():
                 image = input[0]
-                cv2.imshow(__class__.title, image)
-                cv2.waitKey(0)
-                cv2.destroyAllWindows()
-
+                image_name = str(self.global_id) + ".png"
+                storage_version_folder = __class__.storage_folder + os.environ['VERSION']
+                image_path = os.path.join(storage_version_folder, image_name)
+                if not os.path.isdir(storage_version_folder):
+                    os.mkdir(storage_version_folder)
+                image.save(image_path)
             else:
                 image = self.default_image
         else:
             image = self.default_image
-            
         return image
 
 
-class BlurImage(Cv2NodeBase):
-    title = "Blur Image (OpenCV)"
+# class ShowImage(ImageNodeBase):
+#     title = "Show Image"
+
+#     def __init__(self, num_inp=1, num_out=1, title = title):
+#         super().__init__(num_inp, num_out, title)
+
+#     def get_image(self):
+#         self.update_nodevalueinputs()
+#         input = self.get_nodevalueinputs(ind=0)
+#         if input:
+#             print(input)
+#             if 0 in input.keys():
+#                 image = input[0]
+#                 image.show()
+#             else:
+#                 image = self.default_image
+#         else:
+#             image = self.default_image
+            
+#         return image
+
+
+class BlurImage(ImageNodeBase):
+    title = "Blur Image"
     padding = 17
 
     def __init__(self, num_inp=1, num_out=1, title = title):
@@ -72,38 +95,7 @@ class BlurImage(Cv2NodeBase):
             if 0 in input.keys():
                 img = input[0]
                 if img is not None:
-                    ksize = (__class__.padding, __class__.padding)
-                    image = cv2.blur(img, ksize)
-                else:
-                    image = self.default_image
-            else:
-                image = self.default_image
-        else:
-            image = self.default_image
-
-        return image
-
-
-class ResizeImage(Cv2NodeBase):
-    title = "Resize Image (OpenCV)"
-    scale_w = 0.25
-    scale_h = 0.25
-
-    def __init__(self, num_inp=1, num_out=1, title = title):
-        super().__init__(num_inp, num_out, title)
-
-    def get_image(self):
-        self.update_nodevalueinputs()
-        input = self.get_nodevalueinputs(ind=0)
-        if input:
-            if 0 in input.keys():
-                img = input[0]
-                if img is not None:
-                    resize_w = int(img.shape[1] * __class__.scale_w)
-                    resize_h = int(img.shape[0] * __class__.scale_h)
-                    dim = (resize_w, resize_h)
-                    # resize image
-                    image = cv2.resize(img, dim, interpolation = cv2.INTER_AREA)
+                    image = img.filter(ImageFilter.GaussianBlur(__class__.padding))
                 else:
                     image = self.default_image
             else:
@@ -116,8 +108,8 @@ class ResizeImage(Cv2NodeBase):
 
 export_nodes = [
     ReadImage,
-    ShowImage,
+    SaveImage,
+    # ShowImage,
     BlurImage,
-    ResizeImage,
 
 ]

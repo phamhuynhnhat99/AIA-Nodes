@@ -1,10 +1,6 @@
-from tkinter import *
+from mtcnn.mtcnn import MTCNN
 
-
-from mtcnn import MTCNN
-
-
-class MtcnnDetectorWidget():
+class MtcnnDetectorWidget:
     
     def __init__(self):
         self.detector = MTCNN()
@@ -18,3 +14,4 @@ class export_widgets:
 
     MtcnnDetectorWidget = MtcnnDetectorWidget
 
+ 

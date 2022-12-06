@@ -18,8 +18,8 @@ class Node(Base):
             self.nodevalueoutput_[0] = self.get_output()
         self.nodeoutput_ = None
 
-        self.nodevalueinputs = dict()
-        self.nodeinputs = dict()
+        self.nodevalueinputs = dict() # dict of dict
+        self.nodeinputs = dict() # dict of dict
 
         for ind in range(self.num_inp):
             self.nodevalueinputs[ind] = None
@@ -45,8 +45,8 @@ class Node(Base):
 
     def remove_nodeinputs_and_its_value(self, node):
         if node in self.nodeinputs.values():
-            ind = list(self.nodeinputs.values).index(node)
-            key = list(self.nodeinputs.keys)[ind]
+            ind = list(self.nodeinputs.values()).index(node)
+            key = list(self.nodeinputs.keys())[ind]
             del self.nodeinputs[key]
             del self.nodevalueinputs[key]
 

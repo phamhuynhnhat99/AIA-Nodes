@@ -6,6 +6,7 @@ utils = import_widgets(__file__, "utils.py")
 
 
 def run():
+
     os.environ['AIA_MODE'] = 'no-gui'
     init_node_env()
 

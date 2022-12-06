@@ -1,4 +1,3 @@
-
 import torch
 
 class Yolov5sWidget:
