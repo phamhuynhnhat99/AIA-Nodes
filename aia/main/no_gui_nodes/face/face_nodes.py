@@ -38,8 +38,8 @@ class MtcnnDetector(FaceNodeBase):
         inputs = self.get_nodevalueinputs(ind=-1) # get all inputs
 
         if 0 in inputs.keys():
-            image = inputs[0]
-            if image and 0 in image.keys():
+            inputs_0 = inputs[0]
+            if inputs_0 and 0 in inputs_0.keys():
                 if 1 in inputs.keys() and inputs[1]:
                     if 0 in inputs[1].keys():
                         min_confidence = inputs[1][0]
@@ -48,10 +48,13 @@ class MtcnnDetector(FaceNodeBase):
                 else:
                     min_confidence = __class__.min_confidence
 
-                open_cv_image = numpy.asarray(image[0])
+                open_cv_image = numpy.asarray(inputs_0[0])
 
                 MtcnnDetectorWidget = widgets.MtcnnDetectorWidget()
-                faces = MtcnnDetectorWidget.detector.detect_faces(open_cv_image)
+                try:
+                    faces = MtcnnDetectorWidget.detector.detect_faces(open_cv_image)
+                except:
+                    faces = list()
 
                 image_clone = open_cv_image.copy()
                 color = (0, 0, 255) # red

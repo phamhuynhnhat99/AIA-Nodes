@@ -37,8 +37,8 @@ class Yolov5sDetector(Yolov5sNodeBase):
         inputs = self.get_nodevalueinputs(ind=-1) # get all inputs
 
         if 0 in inputs.keys():
-            image = inputs[0]
-            if image and 0 in image.keys():
+            inputs_0 = inputs[0]
+            if inputs_0 and 0 in inputs_0.keys():
                 if 1 in inputs.keys() and inputs[1]:
                     if 0 in inputs[1].keys():
                         min_confidence = inputs[1][0]
@@ -47,7 +47,7 @@ class Yolov5sDetector(Yolov5sNodeBase):
                 else:
                     min_confidence = __class__.min_confidence
 
-                open_cv_image = numpy.asarray(image[0])
+                open_cv_image = numpy.asarray(inputs_0[0])
 
                 Yolov5sWidget = widgets.Yolov5sWidget()
                 predict_df = Yolov5sWidget.get_predict_df(open_cv_image)

@@ -21,6 +21,7 @@ class ReadImageWidget():
                 filetypes=filetypes)
             if filename:
                 self.image_path = filename
+            root.destroy()
             root.quit()
         
         root = tk.Tk()
