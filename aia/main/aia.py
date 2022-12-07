@@ -77,8 +77,11 @@ def run():
                 u, v = -1, -1
             coordinator.removing_a_registered_arrow(u, v)
 
-        else:
+
+        elif choice == "0":
             break
+        else:
+            continue
 
     print("----------------------------------------")
     print("Good luck Have fun.")

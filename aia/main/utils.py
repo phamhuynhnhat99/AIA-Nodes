@@ -3,6 +3,9 @@ import sys
 
 from aia.flow.flow import Flow
 
+import matplotlib.pyplot as plt
+import networkx as nx
+
 class Coordinator:
 
     def __init__(self):
@@ -54,8 +57,32 @@ class Coordinator:
 
 
     def display_arrows(self):
+
+        G = nx.DiGraph()
+        plt.clf()
+
+        visited = []
+
         for id, arrow in enumerate(self.arrows):
             print("             ", arrow[0], '---->', arrow[1])
+
+            u_gid = arrow[0]
+            v_gid = arrow[1]
+            u_title = self.registered_nodes[u_gid].__class__.title
+            v_title = self.registered_nodes[v_gid].__class__.title
+            G.add_edge(str(u_gid) + "\n" + u_title, str(v_gid) + "\n" + v_title)
+            if u_gid not in visited:
+                visited.append(u_gid)
+            if v_gid not in visited:
+                visited.append(v_gid)
+        
+        for ver, node in self.registered_nodes.items():
+            if ver not in visited:
+                ver_name = str(ver) + "\n" + node.__class__.title
+                G.add_node(ver_name)
+        
+        nx.draw(G, with_labels=True, node_size=50, node_color='cyan', font_color='red', edgecolors='k', width=2.0)
+        plt.savefig('Graph Networkx.png')
 
     
     def display_order(self):
