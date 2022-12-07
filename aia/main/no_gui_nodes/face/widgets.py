@@ -1,4 +1,4 @@
-from mtcnn.mtcnn import MTCNN
+from mtcnn import MTCNN
 
 class MtcnnDetectorWidget:
     
