@@ -85,7 +85,7 @@ class SaveImage(ImageNodeBase):
 
 class BlurImage(ImageNodeBase):
     title = "Blur Image"
-    padding = 17
+    padding = 7
 
     def __init__(self, num_inp=1, num_out=1, title = title):
         super().__init__(num_inp, num_out, title)

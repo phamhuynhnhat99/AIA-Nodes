@@ -17,6 +17,9 @@ def run():
     """ Infinity Loop """
     while True:
         os.system('clear')
+        print("-oOo-             -oOo-            -oOo-")
+        print("TITLE:", coordinator.title)
+        print("VERSION:", coordinator.version)
         print("----------------------------------------")
         coordinator.display_no_gui_nodes()
         print("----------------------------------------")

@@ -254,8 +254,10 @@ class Coordinator:
             
             """ general info """
             general_info = aia["general info"]
-            os.environ["TITLE"] = general_info["title"]
-            os.environ["VERSION"] = general_info["version"]
+            self.title = general_info["title"]
+            self.version = general_info["version"]
+            os.environ["TITLE"] = self.title
+            os.environ["VERSION"] = self.version
 
             """ self.no_gui_nodes """
             required_nodes_path = aia["required nodes path"]

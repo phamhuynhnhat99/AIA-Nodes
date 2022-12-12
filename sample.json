@@ -1,7 +1,7 @@
 {
     "general info": {
         "title": "AIA Project",
-        "version": "0"
+        "version": "v0.0"
     },
     "required nodes path": {
         "path": "no_gui_nodes",
@@ -66,6 +66,14 @@
                     {
                         "gid": 5,
                         "title": "Save Image"
+                    },
+                    {
+                        "gid": 7,
+                        "title": "Blur Image"
+                    },
+                    {
+                        "gid": 9,
+                        "title": "Save Image"
                     }
                 ],
                 "arrows": [
@@ -92,6 +100,16 @@
                     {
                         "from": 4,
                         "to": 5,
+                        "at": 0
+                    },
+                    {
+                        "from": 5,
+                        "to": 7,
+                        "at": 0
+                    },
+                    {
+                        "from": 7,
+                        "to": 9,
                         "at": 0
                     }
                 ]
