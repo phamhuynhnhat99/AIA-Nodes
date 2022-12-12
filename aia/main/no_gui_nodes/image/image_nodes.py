@@ -5,6 +5,8 @@ widgets = import_widgets(__file__)
 from PIL import Image, ImageFilter
 
 class ImageNodeBase(Node):
+    path = "image/image_nodes"
+
     def __init__(self, num_inp, num_out, title):
         super().__init__(num_inp=num_inp, num_out=num_out, title=title)
         self.default_image = Image.open("aia.png")

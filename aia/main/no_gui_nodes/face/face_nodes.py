@@ -1,12 +1,13 @@
 from aia.NENV import *
 
 widgets = import_widgets(__file__)
-print(type(widgets))
 
 from PIL import Image
 import cv2, numpy
 
 class FaceNodeBase(Node):
+    path = "face/face_nodes"
+    
     def __init__(self, num_inp, num_out, title):
         super().__init__(num_inp=num_inp, num_out=num_out, title=title)
         self.default_image = Image.open("aia.png")

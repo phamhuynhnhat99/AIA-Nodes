@@ -36,12 +36,14 @@ class Node(Base):
             else:
                 self.nodevalueinputs[ind] = None
 
+
     def get_nodevalueinputs(self, ind = -1):
         if ind == -1:
             return self.nodevalueinputs
         elif ind in self.nodevalueinputs.keys():
             return self.nodevalueinputs[ind]
         return None
+
 
     def remove_nodeinputs_and_its_value(self, node):
         if node in self.nodeinputs.values():
@@ -51,10 +53,8 @@ class Node(Base):
             del self.nodevalueinputs[key]
 
 
-
-
     """ RESET """
-    def reset_all(self):
+    def reset(self):
         self.title = ''
         self.version: str = None
 

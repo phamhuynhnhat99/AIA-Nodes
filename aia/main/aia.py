@@ -11,11 +11,12 @@ def run():
     init_node_env()
 
     coordinator = utils.Coordinator()
-    coordinator.auto_loading()
+    # coordinator.auto_loading()
+    coordinator.load()
     
     """ Infinity Loop """
     while True:
-        os.system('clear')
+        # os.system('clear')
         print("----------------------------------------")
         coordinator.display_no_gui_nodes()
         print("----------------------------------------")
@@ -76,6 +77,11 @@ def run():
             except:
                 u, v = -1, -1
             coordinator.removing_a_registered_arrow(u, v)
+
+        elif choice == "save":
+            coordinator.save()
+        elif choice == "load":
+            coordinator.load()
 
 
         elif choice == "0":

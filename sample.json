@@ -1,0 +1,59 @@
+{
+    "general info": {
+        "title": "AIA Project",
+        "version": "0"
+    },
+    "required nodes path": {
+        "path": "no_gui_nodes",
+        "no gui nodes": [
+            {
+                "0": "Float Input (Text)",
+                "module_name": "text/text_nodes"
+            },
+            {
+                "1": "Detector (Yolov5s)",
+                "module_name": "yolov5s/yolov5s_nodes"
+            },
+            {
+                "2": "Detector (MTCNN)",
+                "module_name": "face/face_nodes"
+            },
+            {
+                "3": "Read Image",
+                "module_name": "image/image_nodes"
+            },
+            {
+                "4": "Save Image",
+                "module_name": "image/image_nodes"
+            },
+            {
+                "5": "Blur Image",
+                "module_name": "image/image_nodes"
+            }
+        ]
+    },
+    "scripts": [
+        {
+            "title": "doSth",
+            "flow": {
+                "registered nodes": [
+                    {
+                        "title": "Blur Image",
+                        "gid": 0
+                    },
+                    {
+                        "title": "Blur Image",
+                        "gid": 1
+                    }
+                ],
+                "arrows": [
+                    {
+                        "from": 0,
+                        "to": 1,
+                        "at": 0
+                    }
+                ]
+            }
+        }
+    ]
+}

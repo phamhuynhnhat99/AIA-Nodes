@@ -6,6 +6,8 @@ from PIL import Image
 import cv2, numpy
 
 class Yolov5sNodeBase(Node):
+    path = "yolov5s/yolov5s_nodes"
+    
     def __init__(self, num_inp, num_out, title):
         super().__init__(num_inp=num_inp, num_out=num_out, title=title)
         self.default_image = Image.open("aia.png")
