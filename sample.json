@@ -44,28 +44,28 @@
             "flow": {
                 "registered nodes": [
                     {
-                        "title": "Read Image",
-                        "gid": 0
+                        "gid": 0,
+                        "title": "Read Image"
                     },
                     {
-                        "title": "Detector (Yolov5s)",
-                        "gid": 1
+                        "gid": 1,
+                        "title": "Detector (Yolov5s)"
                     },
                     {
-                        "title": "Float Input (Text)",
-                        "gid": 2
+                        "gid": 2,
+                        "title": "Float Input (Text)"
                     },
                     {
-                        "title": "Save Image",
-                        "gid": 3
+                        "gid": 3,
+                        "title": "Save Image"
                     },
                     {
-                        "title": "Detector (MTCNN)",
-                        "gid": 4
+                        "gid": 4,
+                        "title": "Detector (MTCNN)"
                     },
                     {
-                        "title": "Save Image",
-                        "gid": 5
+                        "gid": 5,
+                        "title": "Save Image"
                     }
                 ],
                 "arrows": [

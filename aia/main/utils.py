@@ -213,8 +213,8 @@ class Coordinator:
         flow["flow"]["registered nodes"] = list()
         for gid, node in self.registered_nodes.items():
             tmp = dict()
-            tmp["title"] = node.__class__.title
             tmp["gid"] = gid
+            tmp["title"] = node.__class__.title
             flow["flow"]["registered nodes"].append(tmp)
         flow["flow"]["arrows"] = list()
         for arrow in self.arrows:
@@ -294,8 +294,8 @@ class Coordinator:
                 self.registered_nodes[v].nodeinputs[ind] = self.registered_nodes[u]
 
             self.updating_toposort()
-            if self.order is not None:
-                for ver in self.order:
+            for ver in self.order:
+                if self.registered_nodes[ver].num_inp > 0:
                     self.registered_nodes[ver].update_event()
 
             json_file.close()

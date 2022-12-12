@@ -10,7 +10,7 @@ class ImageNodeBase(Node):
     def __init__(self, num_inp, num_out, title):
         super().__init__(num_inp=num_inp, num_out=num_out, title=title)
         self.default_image = Image.open("aia.png")
-        self.image = self.default_image
+        self.output = self.default_image
 
     
     def get_output(self):
@@ -18,8 +18,8 @@ class ImageNodeBase(Node):
 
 
     def update_event(self):
-        self.image = self.get_output()
-        self.nodevalueoutput_[0] = self.image
+        self.output = self.get_output()
+        self.nodevalueoutput_[0] = self.output
 
 
 class ReadImage(ImageNodeBase):

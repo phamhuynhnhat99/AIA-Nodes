@@ -11,7 +11,7 @@ class Yolov5sNodeBase(Node):
     def __init__(self, num_inp, num_out, title):
         super().__init__(num_inp=num_inp, num_out=num_out, title=title)
         self.default_image = Image.open("aia.png")
-        self.image = self.default_image
+        self.output = self.default_image
 
 
     def get_output(self):
@@ -19,8 +19,8 @@ class Yolov5sNodeBase(Node):
 
 
     def update_event(self):
-        self.image, self.all_people = self.get_output()
-        self.nodevalueoutput_[0] = self.image
+        self.output, self.all_people = self.get_output()
+        self.nodevalueoutput_[0] = self.output
         self.nodevalueoutput_[1] = self.all_people
 
 
