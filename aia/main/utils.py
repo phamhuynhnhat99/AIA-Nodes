@@ -189,13 +189,26 @@ class Coordinator:
                 if ver != gid:
                     self.registered_nodes[ver].update_event()
 
+    def removing_a_registered_arrow(self, u, v):
+        if [u, v] in self.arrows:
+            self.arrows.remove([u, v])
+            del self.locations[(u, v)]
+            self.registered_nodes[v].remove_nodeinputs_and_its_value(self.registered_nodes[u])
+
+            self.updating_toposort()
+            # get vertex v's descendants and "update_event" all of them
+            self.updating_a_registered_node(v)
+
 
     def save(self):
         self.save = dict()
+
+        """ general info """
         self.save["general info"] = dict()
         self.save["general info"]["title"] = self.title
         self.save["general info"]["version"] = self.version
         
+        """ self.no_gui_nodes """
         self.save["required nodes path"] = dict()
         self.save["required nodes path"]["path"] = "no_gui_nodes"
         self.save["required nodes path"]["no gui nodes"] = list()
@@ -206,6 +219,7 @@ class Coordinator:
             tmp["module_name"] = node.path
             self.save["required nodes path"]["no gui nodes"].append(tmp)
 
+        """ self.registered_nodes """
         self.save["scripts"] = list()
         flow = dict()
         flow["title"] = "doSth"
@@ -216,6 +230,8 @@ class Coordinator:
             tmp["gid"] = gid
             tmp["title"] = node.__class__.title
             flow["flow"]["registered nodes"].append(tmp)
+
+        """ self.arrows """
         flow["flow"]["arrows"] = list()
         for arrow in self.arrows:
             u, v = arrow[0], arrow[1]
