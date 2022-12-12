@@ -201,7 +201,8 @@ class Coordinator:
         self.save["required nodes path"]["no gui nodes"] = list()
         for ind, node in enumerate(self.no_gui_nodes):
             tmp = dict()
-            tmp[ind] = node.title
+            tmp["index"] = ind
+            tmp["title"] = node.title
             tmp["module_name"] = node.path
             self.save["required nodes path"]["no gui nodes"].append(tmp)
 
@@ -231,13 +232,16 @@ class Coordinator:
     
     def load(self):
         self.reset()
+        tmp_no_gui_nodes = [] # temp of self.no_gui_nodes
         with open('sample.json') as json_file:
             aia = json.load(json_file)
             
+            """ general info """
             general_info = aia["general info"]
             os.environ["TITLE"] = general_info["title"]
             os.environ["VERSION"] = general_info["version"]
 
+            """ self.no_gui_nodes """
             required_nodes_path = aia["required nodes path"]
             path = required_nodes_path["path"]
             auto_loading_path = os.path.join(os.path.dirname(__file__), path)
@@ -255,9 +259,44 @@ class Coordinator:
                     nodes_py = os.path.join(nodes_py, aln_nodes)
                     try:
                         module_name = os.path.basename(nodes_py).split(".py")[0]
-                        self.no_gui_nodes += __import__(module_name).export_nodes
+                        tmp_no_gui_nodes += __import__(module_name).export_nodes
                     except:
                         continue
+            tmp_no_gui_nodes_title = [node.title for node in tmp_no_gui_nodes]
+            for ngn in no_gui_nodes:
+                title = ngn["title"]
+                index = tmp_no_gui_nodes_title.index(title)
+                self.no_gui_nodes.append(tmp_no_gui_nodes[index])
+
+            """ self.registered_nodes """
+            scripts = aia["scripts"]
+            flow = scripts[0]
+            registered_nodes = flow["flow"]["registered nodes"]
+            max_gid = -1
+            for registered_node in registered_nodes:
+                gid = registered_node["gid"]
+                if gid > max_gid:
+                    max_gid = gid
+                
+                node_title = registered_node["title"]
+                index = tmp_no_gui_nodes_title.index(node_title)
+                new_node = tmp_no_gui_nodes[index]()
+                self.registered_nodes[gid] = new_node
+
+            """ self.arrows """
+            arrows = flow["flow"]["arrows"]
+            for arrow in arrows:
+                u = arrow["from"]
+                v = arrow["to"]
+                ind = arrow["at"]
+                self.arrows.append([u, v])
+                self.locations[(u, v)] = ind
+                self.registered_nodes[v].nodeinputs[ind] = self.registered_nodes[u]
+
+            self.updating_toposort()
+            if self.order is not None:
+                for ver in self.order:
+                    self.registered_nodes[ver].update_event()
 
             json_file.close()
 

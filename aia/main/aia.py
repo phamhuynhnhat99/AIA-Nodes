@@ -11,12 +11,12 @@ def run():
     init_node_env()
 
     coordinator = utils.Coordinator()
-    # coordinator.auto_loading()
-    coordinator.load()
+    coordinator.auto_loading()
+    # coordinator.load()
     
     """ Infinity Loop """
     while True:
-        # os.system('clear')
+        os.system('clear')
         print("----------------------------------------")
         coordinator.display_no_gui_nodes()
         print("----------------------------------------")

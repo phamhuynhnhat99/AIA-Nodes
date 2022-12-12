@@ -10,6 +10,9 @@ class IDCtr:
         self.ctr += 1
         return self.ctr
 
+    def set(self, ctr):
+        self.ctr = ctr
+
 
 class Base:
     """
@@ -41,6 +44,10 @@ class Base:
 
         self.prev_global_id = None
         self.prev_version = None
+
+    def update_ctr(self, ctr):
+        self._global_id_ctr.set(ctr=ctr)
+
 
     def data(self) -> dict:
         """

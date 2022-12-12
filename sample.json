@@ -7,27 +7,33 @@
         "path": "no_gui_nodes",
         "no gui nodes": [
             {
-                "0": "Float Input (Text)",
+                "index": 0,
+                "title": "Float Input (Text)",
                 "module_name": "text/text_nodes"
             },
             {
-                "1": "Detector (Yolov5s)",
+                "index": 1,
+                "title": "Detector (Yolov5s)",
                 "module_name": "yolov5s/yolov5s_nodes"
             },
             {
-                "2": "Detector (MTCNN)",
+                "index": 2,
+                "title": "Detector (MTCNN)",
                 "module_name": "face/face_nodes"
             },
             {
-                "3": "Read Image",
+                "index": 3,
+                "title": "Read Image",
                 "module_name": "image/image_nodes"
             },
             {
-                "4": "Save Image",
+                "index": 4,
+                "title": "Save Image",
                 "module_name": "image/image_nodes"
             },
             {
-                "5": "Blur Image",
+                "index": 5,
+                "title": "Blur Image",
                 "module_name": "image/image_nodes"
             }
         ]
@@ -38,18 +44,54 @@
             "flow": {
                 "registered nodes": [
                     {
-                        "title": "Blur Image",
+                        "title": "Read Image",
                         "gid": 0
                     },
                     {
-                        "title": "Blur Image",
+                        "title": "Detector (Yolov5s)",
                         "gid": 1
+                    },
+                    {
+                        "title": "Float Input (Text)",
+                        "gid": 2
+                    },
+                    {
+                        "title": "Save Image",
+                        "gid": 3
+                    },
+                    {
+                        "title": "Detector (MTCNN)",
+                        "gid": 4
+                    },
+                    {
+                        "title": "Save Image",
+                        "gid": 5
                     }
                 ],
                 "arrows": [
                     {
                         "from": 0,
                         "to": 1,
+                        "at": 0
+                    },
+                    {
+                        "from": 2,
+                        "to": 1,
+                        "at": 1
+                    },
+                    {
+                        "from": 1,
+                        "to": 3,
+                        "at": 0
+                    },
+                    {
+                        "from": 1,
+                        "to": 4,
+                        "at": 0
+                    },
+                    {
+                        "from": 4,
+                        "to": 5,
                         "at": 0
                     }
                 ]
