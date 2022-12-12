@@ -261,7 +261,6 @@ class Coordinator:
             required_nodes_path = aia["required nodes path"]
             path = required_nodes_path["path"]
             auto_loading_path = os.path.join(os.path.dirname(__file__), path)
-            print(auto_loading_path)
             no_gui_nodes = required_nodes_path["no gui nodes"]
             auto_loading_nodes = list()
             for ngn in no_gui_nodes:
@@ -291,13 +290,16 @@ class Coordinator:
             max_gid = -1
             for registered_node in registered_nodes:
                 gid = registered_node["gid"]
-                if gid > max_gid:
-                    max_gid = gid
                 
                 node_title = registered_node["title"]
                 index = tmp_no_gui_nodes_title.index(node_title)
                 new_node = tmp_no_gui_nodes[index]()
+                new_node.global_id = gid
                 self.registered_nodes[gid] = new_node
+                if gid > max_gid:
+                    max_gid = gid
+                    new_node.update_ctr(max_gid)
+            
 
             """ self.arrows """
             arrows = flow["flow"]["arrows"]
