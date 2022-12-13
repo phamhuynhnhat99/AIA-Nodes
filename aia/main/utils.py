@@ -7,7 +7,85 @@ from aia.flow.flow import Flow
 import matplotlib.pyplot as plt
 import networkx as nx
 
+
+import tkinter as tk
+from tkinter import filedialog
+class MyFileIO():
+    def __init__(self):
+        self.default_file_path = ""
+        self.file_inp = self.default_file_path
+        self.file_out = self.default_file_path
+
+    
+    def get_file_inp(self):
+
+        def load_file():
+            filetypes = (
+                ('json files', '*.json'), 
+                ('All files', '*.*')
+            )
+
+            filename = filedialog.askopenfilename(
+                title='Open a file',
+                initialdir='/',
+                filetypes=filetypes)
+            if filename:
+                self.file_inp = filename
+            root.destroy()
+            root.quit()
+        
+        root = tk.Tk()
+        root.title('CHOOSE A JSON FILE')
+        root.resizable(False, False)
+        root.geometry('300x100')
+
+        open_btn = tk.Button(
+            root,
+            text='Open a File',
+            command=load_file
+        )
+        open_btn.pack(expand=True)
+
+        root.mainloop()
+
+        return self.file_inp
+
+    
+    def get_file_out(self):
+
+        def save_file():
+            filetypes = (
+                ('json files', '*.json'), 
+                ('All files', '*.*')
+            )
+            file = filedialog.asksaveasfile(
+                title='Save Json',
+                initialdir='/',
+                filetypes=filetypes)
+            if file:
+                self.file_out = file
+            root.destroy()
+            root.quit()
+            
+        root = tk.Tk()
+        root.title('CHOOSE A JSON FILE')
+        root.resizable(False, False)
+        root.geometry('300x100')
+
+        open_btn = tk.Button(
+            root,
+            text='Save a json file',
+            command=save_file
+        )
+        open_btn.pack(expand=True)
+
+        root.mainloop()
+
+        return self.file_out
+
 class Coordinator:
+
+    my_file_io = MyFileIO()
 
     def __init__(self):
 
@@ -201,26 +279,29 @@ class Coordinator:
 
 
     def save(self):
-        self.save = dict()
+
+        file_out = self.__class__.my_file_io.get_file_out()
+
+        aia = dict()
 
         """ general info """
-        self.save["general info"] = dict()
-        self.save["general info"]["title"] = self.title
-        self.save["general info"]["version"] = self.version
+        aia["general info"] = dict()
+        aia["general info"]["title"] = self.title
+        aia["general info"]["version"] = self.version
         
         """ self.no_gui_nodes """
-        self.save["required nodes path"] = dict()
-        self.save["required nodes path"]["path"] = "no_gui_nodes"
-        self.save["required nodes path"]["no gui nodes"] = list()
+        aia["required nodes path"] = dict()
+        aia["required nodes path"]["path"] = "no_gui_nodes"
+        aia["required nodes path"]["no gui nodes"] = list()
         for ind, node in enumerate(self.no_gui_nodes):
             tmp = dict()
             tmp["index"] = ind
             tmp["title"] = node.title
             tmp["module_name"] = node.path
-            self.save["required nodes path"]["no gui nodes"].append(tmp)
+            aia["required nodes path"]["no gui nodes"].append(tmp)
 
         """ self.registered_nodes """
-        self.save["scripts"] = list()
+        aia["scripts"] = list()
         flow = dict()
         flow["title"] = "doSth"
         flow["flow"] = dict()
@@ -240,16 +321,17 @@ class Coordinator:
             tmp["to"] = v
             tmp["at"] = self.locations[(u, v)]
             flow["flow"]["arrows"].append(tmp)
-        self.save["scripts"].append(flow)
+        aia["scripts"].append(flow)
         
-        with open("sample.json", "w") as outfile:
-            json.dump(self.save, outfile)
+        with open(file_out.name, "w") as json_file:
+            json.dump(aia, json_file)
 
     
     def load(self):
+        file_inp = self.__class__.my_file_io.get_file_inp()
         self.reset()
         tmp_no_gui_nodes = [] # temp of self.no_gui_nodes
-        with open('sample.json') as json_file:
+        with open(file_inp) as json_file:
             aia = json.load(json_file)
             
             """ general info """

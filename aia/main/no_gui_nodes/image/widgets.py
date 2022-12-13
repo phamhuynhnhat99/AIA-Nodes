@@ -27,7 +27,7 @@ class ReadImageWidget():
         root = tk.Tk()
         root.title('CHOOSE AN IMAGE')
         root.resizable(False, False)
-        root.geometry('200x100')
+        root.geometry('300x100')
 
         open_btn = tk.Button(
             root,
