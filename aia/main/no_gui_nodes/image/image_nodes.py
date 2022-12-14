@@ -2,6 +2,8 @@ from aia.NENV import *
 
 widgets = import_widgets(__file__)
 
+import requests
+import io
 from PIL import Image, ImageFilter
 
 class ImageNodeBase(Node):
@@ -61,26 +63,42 @@ class SaveImage(ImageNodeBase):
         return image
 
 
-# class ShowImage(ImageNodeBase):
-#     title = "Show Image"
+class RemoveBackground(ImageNodeBase):
+    title = "Remove Background"
+    api = 'https://118.69.190.178:5000/remove'
 
-#     def __init__(self, num_inp=1, num_out=1, title = title):
-#         super().__init__(num_inp, num_out, title)
+    def __init__(self, num_inp=1, num_out=1, title = title):
+        super().__init__(num_inp, num_out, title)
 
-#     def get_image(self):
-#         self.update_nodevalueinputs()
-#         input = self.get_nodevalueinputs(ind=0)
-#         if input:
-#             print(input)
-#             if 0 in input.keys():
-#                 image = input[0]
-#                 image.show()
-#             else:
-#                 image = self.default_image
-#         else:
-#             image = self.default_image
+    def get_image(self):
+        self.update_nodevalueinputs()
+        input = self.get_nodevalueinputs(ind=0)
+        if input:
+            if 0 in input.keys():
+                image = input[0]
+
+                img_byte_arr = io.BytesIO()
+                image.save(img_byte_arr, format='PNG')
+                img_byte_arr = img_byte_arr.getvalue()
+
+                files = {'file': img_byte_arr}
+
+                response = requests.post(__class__.api, files=files, timeout=9, verify=False) # 9 seconds
+                if response.status_code == 200:
+                    try:
+                        imageStream = io.BytesIO(response.content)
+                        image = Image.open(imageStream)
+                    except requests.exceptions.RequestException:
+                        print(response.text)
+                else:
+                    image = self.default_image
+            else:
+                image = self.default_image
+
+        else:
+            image = self.default_image
             
-#         return image
+        return image
 
 
 class BlurImage(ImageNodeBase):
@@ -111,7 +129,7 @@ class BlurImage(ImageNodeBase):
 export_nodes = [
     ReadImage,
     SaveImage,
-    # ShowImage,
+    RemoveBackground,
     BlurImage,
 
 ]

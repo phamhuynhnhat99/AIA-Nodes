@@ -159,7 +159,7 @@ class Coordinator:
         visited = []
 
         for arrow in self.arrows:
-            print("             ", arrow[0], '---->', arrow[1], 'at (', self.locations[(arrow[0], arrow[1])], ')')
+            print("          ", arrow[0], '---->', arrow[1], 'at (', self.locations[(arrow[0], arrow[1])], ')')
 
             u_gid = arrow[0]
             v_gid = arrow[1]
@@ -329,6 +329,7 @@ class Coordinator:
     
     def load(self):
         file_inp = self.__class__.my_file_io.get_file_inp()
+
         self.reset()
         tmp_no_gui_nodes = [] # temp of self.no_gui_nodes
         with open(file_inp) as json_file:
