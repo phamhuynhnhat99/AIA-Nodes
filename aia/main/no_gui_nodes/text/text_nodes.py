@@ -3,7 +3,7 @@ from aia.NENV import *
 widgets = import_widgets(__file__) # optional
 
 class TextNodeBase(Node):
-    path = "text/text_nodes"
+    path = "text/text_nodes" # compulsory
 
     def __init__(self):
         super().__init__()

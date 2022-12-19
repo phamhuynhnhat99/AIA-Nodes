@@ -1,14 +1,14 @@
-
-import matplotlib.pyplot as plt
-import networkx as nx
-
-G = nx.DiGraph()
-
-G.add_edge('Read Image','222222222222')
-G.add_edge('Read Image','333333333333')
-G.add_edge('333333333333','222222222222')
-G.add_edge('333333333333','444444444444')
-G.add_edge('444444444444','333333333333')
-
-nx.draw(G, with_labels=True, node_size=10000, node_color='cyan', edgecolors='k', width=2.0)
-plt.show()
+import configparser
+config = configparser.ConfigParser()
+config['DEFAULT'] = {'ServerAliveInterval': '45',
+                     'Compression': 'yes',
+                     'CompressionLevel': '9'}
+config['bitbucket.org'] = {}
+config['bitbucket.org']['User'] = 'hg'
+config['topsecret.server.com'] = {}
+topsecret = config['topsecret.server.com']
+topsecret['Port'] = '50022'     # mutates the parser
+topsecret['ForwardX11'] = 'no'  # same here
+config['DEFAULT']['ForwardX11'] = 'yes'
+with open('example.ini', 'w') as configfile:
+  config.write(configfile)

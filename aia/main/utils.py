@@ -82,6 +82,7 @@ class MyFileIO():
         root.mainloop()
 
         return self.file_out
+        
 
 class Coordinator:
 
@@ -122,7 +123,7 @@ class Coordinator:
     
     def auto_loading(self):
         """ Load all of nodes that from aia.main.auto_loading folder """
-        auto_loading_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "no_gui_nodes"))
+        auto_loading_path = os.path.join(os.path.dirname(__file__), "no_gui_nodes")
         auto_loading_nodes = os.listdir(auto_loading_path)
         try:
             auto_loading_nodes.remove("__pycache__")
@@ -201,8 +202,16 @@ class Coordinator:
         self.order = self.flow.toposort()
 
     
+    def updating_a_registered_node(self, gid):
+        """ get its descendants and "update_event" all of them """
+        if gid in self.registered_nodes.keys():
+            if self.order is not None: # Topo Existing
+                genealogy_of_u = self.flow.sub_toposort_from(gid)
+                for v in genealogy_of_u:
+                    self.registered_nodes[v].update_event()
+
+    
     def updating_order(self):
-        self.updating_toposort()
         for v in self.order:
             self.registered_nodes[v].update_event()
 

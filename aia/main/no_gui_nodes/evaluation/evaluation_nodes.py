@@ -5,7 +5,7 @@ widgets = import_widgets(__file__) # optional
 import numpy as np
 
 class EvaluationNodeBase(Node):
-    path = "evaluation/evaluation_nodes"
+    path = "evaluation/evaluation_nodes" # compulsory
 
     def __init__(self, num_inp=2, num_out=1, title=''):
         super().__init__(num_inp, num_out, title)
@@ -52,7 +52,8 @@ class DiceCoefficient(EvaluationNodeBase):
 
                     else:
                         self.eval = self.default_eval
-                except:
+                except Exception:
+                    print(Exception)
                     self.eval = self.default_eval
             else:
                 self.eval = self.default_eval

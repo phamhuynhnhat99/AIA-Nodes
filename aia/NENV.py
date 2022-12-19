@@ -4,13 +4,13 @@ from aia.core.Node import Node as Node_
 from aia.gui_core.cell_op import CellOp as CellOp_
 
 
+import configparser
+config = configparser.ConfigParser()
+config.read("config.ini")
+
 Node = None
 
-
 def init_node_env():
-
-    os.environ['ROOT_FOLDER'] = os.path.dirname(__file__) # aia folder
-    os.environ['STORAGE_FOLDER'] = os.path.join(os.environ['ROOT_FOLDER'], "storage/")
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--version', dest='version', type=str, help='Get this version')
@@ -22,11 +22,11 @@ def init_node_env():
 
     global Node
 
-    if os.environ['AIA_MODE'] == 'gui':
+    if config["DEFAULT"]["AIA_MODE"] == 'gui':
 
         Node = CellOp_
 
-    else: # os.environ['AIA_MODE'] == 'no-gui':
+    else: # config["DEFAULT"]["AIA_MODE"] == 'no-gui':
         
         Node = Node_
 

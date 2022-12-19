@@ -7,7 +7,7 @@ import io
 from PIL import Image, ImageFilter
 
 class ImageNodeBase(Node):
-    path = "image/image_nodes"
+    path = "image/image_nodes" # compulsory
 
     def __init__(self, num_inp, num_out, title):
         super().__init__(num_inp=num_inp, num_out=num_out, title=title)
@@ -39,7 +39,7 @@ class ReadImage(ImageNodeBase):
 
 class SaveImage(ImageNodeBase):
     title = "Save Image"
-    storage_folder = os.environ["STORAGE_FOLDER"]
+    storage_folder = config["DEFAULT"]["STORAGE_FOLDER"]
 
     def __init__(self, num_inp=1, num_out=1, title = title):
         super().__init__(num_inp, num_out, title)
@@ -65,7 +65,7 @@ class SaveImage(ImageNodeBase):
 
 class RemoveBackground(ImageNodeBase):
     title = "Remove Background"
-    api = 'https://118.69.190.178:5000/remove'
+    api = config["api"]["remove_background"]
 
     def __init__(self, num_inp=1, num_out=1, title = title):
         super().__init__(num_inp, num_out, title)
