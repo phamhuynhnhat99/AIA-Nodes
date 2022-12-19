@@ -1,0 +1,119 @@
+{
+    "general info": {
+        "title": "AIA Project",
+        "version": "v0.0"
+    },
+    "required nodes path": {
+        "path": "no_gui_nodes",
+        "no gui nodes": [
+            {
+                "index": 0,
+                "title": "Float Input (Text)",
+                "module_name": "text/text_nodes"
+            },
+            {
+                "index": 1,
+                "title": "Detector (Yolov5s)",
+                "module_name": "yolov5s/yolov5s_nodes"
+            },
+            {
+                "index": 2,
+                "title": "Detector (MTCNN)",
+                "module_name": "face/face_nodes"
+            },
+            {
+                "index": 3,
+                "title": "Read Image",
+                "module_name": "image/image_nodes"
+            },
+            {
+                "index": 4,
+                "title": "Save Image",
+                "module_name": "image/image_nodes"
+            },
+            {
+                "index": 5,
+                "title": "Blur Image",
+                "module_name": "image/image_nodes"
+            }
+        ]
+    },
+    "scripts": [
+        {
+            "title": "doSth",
+            "flow": {
+                "registered nodes": [
+                    {
+                        "gid": 0,
+                        "title": "Read Image"
+                    },
+                    {
+                        "gid": 1,
+                        "title": "Detector (Yolov5s)"
+                    },
+                    {
+                        "gid": 2,
+                        "title": "Float Input (Text)"
+                    },
+                    {
+                        "gid": 3,
+                        "title": "Save Image"
+                    },
+                    {
+                        "gid": 4,
+                        "title": "Detector (MTCNN)"
+                    },
+                    {
+                        "gid": 5,
+                        "title": "Save Image"
+                    },
+                    {
+                        "gid": 7,
+                        "title": "Blur Image"
+                    },
+                    {
+                        "gid": 9,
+                        "title": "Save Image"
+                    }
+                ],
+                "arrows": [
+                    {
+                        "from": 0,
+                        "to": 1,
+                        "at": 0
+                    },
+                    {
+                        "from": 2,
+                        "to": 1,
+                        "at": 1
+                    },
+                    {
+                        "from": 1,
+                        "to": 3,
+                        "at": 0
+                    },
+                    {
+                        "from": 1,
+                        "to": 4,
+                        "at": 0
+                    },
+                    {
+                        "from": 4,
+                        "to": 5,
+                        "at": 0
+                    },
+                    {
+                        "from": 5,
+                        "to": 7,
+                        "at": 0
+                    },
+                    {
+                        "from": 7,
+                        "to": 9,
+                        "at": 0
+                    }
+                ]
+            }
+        }
+    ]
+}

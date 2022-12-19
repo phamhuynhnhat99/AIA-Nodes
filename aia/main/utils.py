@@ -7,86 +7,7 @@ from aia.flow.flow import Flow
 import matplotlib.pyplot as plt
 import networkx as nx
 
-
-import tkinter as tk
-from tkinter import filedialog
-class MyFileIO():
-    def __init__(self):
-        self.default_file_path = ""
-        self.file_inp = self.default_file_path
-        self.file_out = self.default_file_path
-
-    
-    def get_file_inp(self):
-
-        def load_file():
-            filetypes = (
-                ('json files', '*.json'), 
-                ('All files', '*.*')
-            )
-
-            filename = filedialog.askopenfilename(
-                title='Open a file',
-                initialdir='/',
-                filetypes=filetypes)
-            if filename:
-                self.file_inp = filename
-            root.destroy()
-            root.quit()
-        
-        root = tk.Tk()
-        root.title('CHOOSE A JSON FILE')
-        root.resizable(False, False)
-        root.geometry('300x100')
-
-        open_btn = tk.Button(
-            root,
-            text='Open a File',
-            command=load_file
-        )
-        open_btn.pack(expand=True)
-
-        root.mainloop()
-
-        return self.file_inp
-
-    
-    def get_file_out(self):
-
-        def save_file():
-            filetypes = (
-                ('json files', '*.json'), 
-                ('All files', '*.*')
-            )
-            file = filedialog.asksaveasfile(
-                title='Save Json',
-                initialdir='/',
-                filetypes=filetypes)
-            if file:
-                self.file_out = file
-            root.destroy()
-            root.quit()
-            
-        root = tk.Tk()
-        root.title('CHOOSE A JSON FILE')
-        root.resizable(False, False)
-        root.geometry('300x100')
-
-        open_btn = tk.Button(
-            root,
-            text='Save a json file',
-            command=save_file
-        )
-        open_btn.pack(expand=True)
-
-        root.mainloop()
-
-        return self.file_out
-        
-
 class Coordinator:
-
-    my_file_io = MyFileIO()
 
     def __init__(self):
 
@@ -211,7 +132,7 @@ class Coordinator:
                     self.registered_nodes[v].update_event()
 
     
-    def updating_order(self):
+    def updating_all_of_nodes(self):
         for v in self.order:
             self.registered_nodes[v].update_event()
 
@@ -272,10 +193,7 @@ class Coordinator:
             self.updating_toposort()
 
 
-    def save(self):
-
-        file_out = self.__class__.my_file_io.get_file_out()
-
+    def save(self, aia_save):
         aia = dict()
 
         """ general info """
@@ -317,16 +235,15 @@ class Coordinator:
             flow["flow"]["arrows"].append(tmp)
         aia["scripts"].append(flow)
         
-        with open(file_out.name, "w") as json_file:
+        with open(aia_save, "w") as json_file:
             json.dump(aia, json_file)
 
     
-    def load(self):
-        file_inp = self.__class__.my_file_io.get_file_inp()
+    def load(self, aia_load):
 
         self.reset()
         tmp_no_gui_nodes = [] # temp of self.no_gui_nodes
-        with open(file_inp) as json_file:
+        with open(aia_load) as json_file:
             aia = json.load(json_file)
             
             """ general info """

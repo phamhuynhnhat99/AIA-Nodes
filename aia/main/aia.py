@@ -1,6 +1,6 @@
 import os
 
-from aia.NENV import init_node_env, import_widgets
+from aia.NENV import *
 
 utils = import_widgets(__file__, "utils.py")
 
@@ -60,7 +60,7 @@ def run():
             coordinator.registering_a_new_arrow(u, v, ind)
 
         elif choice == "3":
-            coordinator.updating_order()
+            coordinator.updating_all_of_nodes()
 
         elif choice == "4":
             try:
@@ -86,10 +86,11 @@ def run():
             coordinator.removing_a_registered_arrow(u, v)
 
         elif choice == "save":
-            coordinator.save()
+            aia_save = config["save_and_load"]["json_file_save"]
+            coordinator.save(aia_save)
         elif choice == "load":
-            coordinator.load()
-
+            aia_load = config["save_and_load"]["json_file_load"]
+            coordinator.load(aia_load)
 
         elif choice == "0":
             break
