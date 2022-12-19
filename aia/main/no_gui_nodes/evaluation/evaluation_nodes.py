@@ -1,6 +1,6 @@
 from aia.NENV import *
 
-widgets = import_widgets(__file__)
+widgets = import_widgets(__file__) # optional
 
 import numpy as np
 
@@ -62,11 +62,7 @@ class DiceCoefficient(EvaluationNodeBase):
         return self.eval
 
 
-        dscWidgets = widgets.DiceCoefficient()
-        print(dscWidgets.dsc)
-        return dscWidgets.dsc
-
-
+# compulsory
 export_nodes = [
     DiceCoefficient,
 ]

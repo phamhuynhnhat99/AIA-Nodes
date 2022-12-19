@@ -1,6 +1,6 @@
 from aia.NENV import *
 
-widgets = import_widgets(__file__)
+widgets = import_widgets(__file__) # optional
 
 class TextNodeBase(Node):
     path = "text/text_nodes"
@@ -41,6 +41,7 @@ class FloatInput(TextNodeBase):
         return output
 
 
+# compulsory
 export_nodes = [
    FloatInput,
 

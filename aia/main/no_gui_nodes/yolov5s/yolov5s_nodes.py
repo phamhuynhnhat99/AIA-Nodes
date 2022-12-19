@@ -1,6 +1,6 @@
 from aia.NENV import *
 
-widgets = import_widgets(__file__)
+widgets = import_widgets(__file__) # optional
 
 from PIL import Image
 import cv2, numpy
@@ -78,6 +78,7 @@ class Yolov5sDetector(Yolov5sNodeBase):
         return image, all_people
 
 
+# compulsory
 export_nodes = [
     Yolov5sDetector,
 

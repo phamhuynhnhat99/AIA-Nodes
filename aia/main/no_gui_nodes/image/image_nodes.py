@@ -1,6 +1,6 @@
 from aia.NENV import *
 
-widgets = import_widgets(__file__)
+widgets = import_widgets(__file__) # optional
 
 import requests
 import io
@@ -126,6 +126,7 @@ class BlurImage(ImageNodeBase):
         return image
 
 
+# compulsory
 export_nodes = [
     ReadImage,
     SaveImage,

@@ -14,8 +14,8 @@ class Node(Base):
         self.version: str = None
 
         self.nodevalueoutput_ = dict()
-        if self.num_inp == 0:
-            self.nodevalueoutput_[0] = self.get_output()
+        # if self.num_inp == 0:
+        #     self.nodevalueoutput_[0] = self.get_output()
         self.nodeoutput_ = None
 
         self.nodevalueinputs = dict() # dict of dict
@@ -50,7 +50,8 @@ class Node(Base):
             ind = list(self.nodeinputs.values()).index(node)
             key = list(self.nodeinputs.keys())[ind]
             del self.nodeinputs[key]
-            del self.nodevalueinputs[key]
+            if key in self.nodevalueinputs.keys():
+                del self.nodevalueinputs[key]
 
 
     """ RESET """

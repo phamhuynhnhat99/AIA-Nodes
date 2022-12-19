@@ -201,13 +201,10 @@ class Coordinator:
         self.order = self.flow.toposort()
 
     
-    def updating_a_registered_node(self, gid):
-        """ get its descendants and "update_event" all of them """
-        if gid in self.registered_nodes.keys():
-            if self.order is not None: # Topo Existing
-                genealogy_of_u = self.flow.sub_toposort_from(gid)
-                for v in genealogy_of_u:
-                    self.registered_nodes[v].update_event()
+    def updating_order(self):
+        self.updating_toposort()
+        for v in self.order:
+            self.registered_nodes[v].update_event()
 
 
     def registering_a_new_node(self, ind):
@@ -238,16 +235,10 @@ class Coordinator:
                     self.registered_nodes[v].nodeinputs[ind] = self.registered_nodes[u]
 
                     self.updating_toposort()
-                    # get vertex v's descendants and "update_event()" all of them
-            
-            self.updating_a_registered_node(v)
 
 
     def removing_a_registered_node(self, gid):
         if gid in self.registered_nodes.keys():
-
-            # get vertex's descendants (before vertex will be removed)
-            genealogy_of_u = self.flow.sub_toposort_from(gid)
             
             # get arrows that contain gid (vertex)
             sub_arrows = [arrow for arrow in self.arrows if gid in arrow]
@@ -257,15 +248,11 @@ class Coordinator:
                 self.registered_nodes[v].remove_nodeinputs_and_its_value(self.registered_nodes[u])
                 self.arrows.remove(arrow)
                 del self.locations[(u, v)]
-
             # Delete node
             del self.registered_nodes[gid]
 
             self.updating_toposort()
-            # Update its descendants
-            for ver in genealogy_of_u:
-                if ver != gid:
-                    self.registered_nodes[ver].update_event()
+
 
     def removing_a_registered_arrow(self, u, v):
         if [u, v] in self.arrows:
@@ -274,8 +261,6 @@ class Coordinator:
             self.registered_nodes[v].remove_nodeinputs_and_its_value(self.registered_nodes[u])
 
             self.updating_toposort()
-            # get vertex v's descendants and "update_event" all of them
-            self.updating_a_registered_node(v)
 
 
     def save(self):
@@ -397,10 +382,6 @@ class Coordinator:
                 self.registered_nodes[v].nodeinputs[ind] = self.registered_nodes[u]
 
             self.updating_toposort()
-            for ver in self.order:
-                if self.registered_nodes[ver].num_inp > 0:
-                    self.registered_nodes[ver].update_event()
-
             json_file.close()
 
 

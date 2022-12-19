@@ -37,7 +37,7 @@ def run():
         print("0: Exit Program")
         print("1: Registering a new node")
         print("2: Registering a direction")
-        print("3: Updating a node")
+        print("3: Updating program")
         print("4: Removing a registered node")
         print("5: Removing a registered arrow")
         choice = input("You choice is: ")
@@ -60,12 +60,8 @@ def run():
             coordinator.registering_a_new_arrow(u, v, ind)
 
         elif choice == "3":
-            try:
-                gid = int(input("Node's Global ID is: "))
-            except:
-                gid = -1
-            coordinator.updating_a_registered_node(gid)
-        
+            coordinator.updating_order()
+         
         elif choice == "4":
             try:
                 gid = int(input("Node's Global ID is: "))
