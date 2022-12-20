@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="logo.png" width="600" title="Welcome to my framework">
+  <img src="aia-logo.png" width="600" title="Welcome to my framework">
 </p>
 
 <h1 dir="auto">
