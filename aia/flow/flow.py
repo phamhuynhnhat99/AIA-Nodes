@@ -83,27 +83,30 @@ class Flow:
 
     
     def sub_toposort_from(self, vertex): # Get all vertex's descendants (include vertex)
-        if vertex not in self.decode_vertices:
-            return []
-        
-        encode_vertext = self.decode_vertices.index(vertex)
-        
-        self.build_graph()
+        if self.order is not None:
+            if vertex not in self.decode_vertices:
+                return []
+            
+            encode_vertext = self.decode_vertices.index(vertex)
+            
+            self.build_graph()
 
-        # bfs from vertex
-        bfs_queue = [encode_vertext]
-        b_ind, e_ind = 0, 0
-        while b_ind <= e_ind:
-            u = bfs_queue[b_ind]
-            b_ind += 1
-            pos = self.head[u]
-            while pos != -1:
-                v = self.adj[pos]
-                if v not in bfs_queue:
-                    bfs_queue.append(v)
-                    e_ind += 1
-                pos = self.before[pos]
-
-        genealogy_of_vertex = [self.decode_vertices[_] for _ in self.order if _ in bfs_queue]
+            # bfs from vertex
+            bfs_queue = [encode_vertext]
+            b_ind, e_ind = 0, 0
+            while b_ind <= e_ind:
+                u = bfs_queue[b_ind]
+                b_ind += 1
+                pos = self.head[u]
+                while pos != -1:
+                    v = self.adj[pos]
+                    if v not in bfs_queue:
+                        bfs_queue.append(v)
+                        e_ind += 1
+                    pos = self.before[pos]
+                    
+            genealogy_of_vertex = [self.decode_vertices[_] for _ in self.order if _ in bfs_queue]
+        else:
+            genealogy_of_vertex = []
         
         return genealogy_of_vertex
