@@ -85,13 +85,13 @@ def run():
                 u, v = -1, -1
             coordinator.removing_a_registered_arrow(u, v)
 
+
         elif choice == "save":
             aia_save = config["save_and_load"]["json_file_save"]
             coordinator.save(aia_save)
         elif choice == "load":
             aia_load = config["save_and_load"]["json_file_load"]
             coordinator.load(aia_load)
-
         elif choice == "0":
             break
         else:
