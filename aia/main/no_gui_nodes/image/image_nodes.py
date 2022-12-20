@@ -13,6 +13,7 @@ class ImageNodeBase(Node):
         super().__init__(num_inp=num_inp, num_out=num_out, title=title)
         self.default_image = Image.open("aia.png")
         self.output = self.default_image
+        self.does_it_use_old_output = False
 
     
     def get_output(self):
@@ -20,7 +21,8 @@ class ImageNodeBase(Node):
 
 
     def update_event(self):
-        self.output = self.get_output()
+        if self.does_it_use_old_output == False:
+            self.output = self.get_output()
         self.nodevalueoutput_[0] = self.output
 
 

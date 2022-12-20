@@ -8,6 +8,7 @@ class TextNodeBase(Node):
     def __init__(self):
         super().__init__()
         self.output = None
+        self.does_it_use_old_output = False
 
     
     def get_output(self):
@@ -15,7 +16,9 @@ class TextNodeBase(Node):
 
 
     def update_event(self):
-        self.output = self.get_output()
+        if self.does_it_use_old_output == False:
+            self.output = self.get_output()
+            self.does_it_use_old_output == True
         self.nodevalueoutput_[0] = self.output
 
 

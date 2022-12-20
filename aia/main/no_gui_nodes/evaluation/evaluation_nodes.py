@@ -9,6 +9,8 @@ class EvaluationNodeBase(Node):
 
     def __init__(self, num_inp=2, num_out=1, title=''):
         super().__init__(num_inp, num_out, title)
+        self.output = None
+        self.does_it_use_old_output = False
     
 
     def get_output(self):
@@ -16,7 +18,8 @@ class EvaluationNodeBase(Node):
 
     
     def update_event(self):
-        self.output = self.get_output()
+        if self.does_it_use_old_output == False:
+            self.output = self.get_output()
         self.nodevalueoutput_[0] = self.output
 
 

@@ -126,6 +126,7 @@ class Coordinator:
     def updating_a_registered_node(self, gid):
         """ get its descendants and "update_event" all of them """
         if gid in self.registered_nodes.keys():
+            self.registered_nodes[gid].does_it_use_old_output = False
             if self.order is not None: # Topo Existing
                 genealogy_of_u = self.flow.sub_toposort_from(gid)
                 for v in genealogy_of_u:
@@ -141,7 +142,6 @@ class Coordinator:
         if 0 <= ind and ind < len(self.no_gui_nodes):
             new_node = self.no_gui_nodes[ind]()
             self.registered_nodes[new_node.global_id] = new_node
-            # self.registered_nodes[new_node.global_id].update_event()
             self.updating_toposort()
             
 
